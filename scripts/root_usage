@@ -1,0 +1,1 @@
+sudo du -xm / | sort -rn | head -n50
