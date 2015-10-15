@@ -224,6 +224,7 @@ export GREP_OPTIONS=--color=auto
 # Set prompt format
 function proml {
 local       BLUE="\[\033[0;34m\]"
+local      GREEN="\[\033[0;32m\]"
 local        RED="\[\033[0;31m\]"
 local       CYAN="\[\033[1;36m\]"
 local     YELLOW="\[\033[0;33m\]"
@@ -231,7 +232,10 @@ local  LIGHT_RED="\[\033[1;31m\]"
 local      WHITE="\[\033[1;37m\]"
 local      BLACK="\[\033[37;0;30m\]"
 local LIGHT_GRAY_BLUE="\[\033[1;47;1;34m\]"
-local WHITE_ON_BLACK="\[\033[30;1;37m\]"
+local GREY_ON_BLACK="\[\033[1;40;0;37m\]"
+local WHITE_ON_BLACK="\[\033[1;40;1;37m\]"
+local       CYAN_ON_BLACK="\[\033[1;40;1;36m\]"
+local     YELLOW_ON_BLACK="\[\033[1;40;1;33m\]"
 local NO_COLOR="\[\033[0m\]"
 case $TERM in
     xterm*)
@@ -243,9 +247,9 @@ case $TERM in
 esac
 
 PS1="${TITLEBAR}\
-$LIGHT_GRAY_BLUE\D{%b%d %H:%M}$NO_COLOR \
-$CYAN\h:$YELLOW\w$NO_COLOR\
-\n:$WHITE "
+$LIGHT_GRAY_BLUE\D{%b%d %H:%M}$NO_COLOR\
+$CYAN_ON_BLACK \h:$YELLOW_ON_BLACK\w$NO_COLOR\
+\n$WHITE_ON_BLACK: "
 PS2='> '
 PS4='+ '
 # Now append a reset color when pushing 'Enter'
