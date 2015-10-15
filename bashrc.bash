@@ -198,9 +198,9 @@ if [ -x /usr/bin/dircolors ]; then
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
 
-    #alias grep='grep --color=auto'
-    #alias fgrep='fgrep --color=auto'
-    #alias egrep='egrep --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
 
 # make autocomplete case insensitive
@@ -219,7 +219,7 @@ export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
 #export HISTCONTROL=ignoreboth
 export HISTIGNORE=$'&: [fb]g:[fb]g:exit'
 export HISTSIZE=8192
-export GREP_OPTIONS=--color=auto
+#export GREP_OPTIONS=--color=auto
 
 # Set prompt format
 function proml {
