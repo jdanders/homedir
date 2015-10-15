@@ -6,9 +6,8 @@ grep "^[^ ]" ~/.bash_history > ~/.bash_historytmp
 #mv ~/.bash_historytmp  ~/.bash_history
 awk '!seen[$0]++' ~/.bash_historytmp > ~/.bash_history
 
-# Choose environment
-[[ -f ~/homedir/bash_work.bash ]] && . ~/homedir/bash_work.bash
-[[ -f ~/homedir/bash_home.bash ]] && . ~/homedir/bash_home.bash
+# Import local environment settings
+[[ -f ~/.local.bash ]] && . ~/.local.bash
 
 # Shell Options
 #
