@@ -179,6 +179,7 @@ cd_func ()
 }
 
 alias cd=cd_func
+alias d=dirs -v
 
 #export LANG=en_US
 alias more='less'
