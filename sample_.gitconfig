@@ -1,0 +1,6 @@
+[include]
+  path = ~/homedir/home.gitconfig
+
+[user]
+  email = username@example.com
+

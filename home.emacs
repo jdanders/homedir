@@ -779,3 +779,28 @@ use std.textio.all;
       verilog-auto-endcomments          nil
       verilog-linter "verilator --lint-only"
       )
+
+(eval-after-load "vc-hooks"
+         '(define-key vc-prefix-map "=" 'ediff-revision))
+
+(defun myverilog-electric-comma (count) "',,' --> ' <= '"
+  (interactive "p")
+  (if (and t (= count 1) t)
+      (cond ((= (preceding-char) last-input-event)
+	     (progn (delete-char -1)
+		    (unless (eq (preceding-char) ? ) (insert " "))
+		    (insert "<= ")))
+	    (t (insert-char ?\, 1)))
+    (self-insert-command count)))
+
+;(setq myverilog-mode-map (make-sparse-keymap))
+;(define-key myverilog-mode-map ","		   'myverilog-electric-comma)
+;(use-local-map myverilog-mode-map)
+(global-set-key "," 'myverilog-electric-comma)
+
+;disable auto indent in python
+(add-hook 'python-mode-hook
+          (lambda ()
+            (setq electric-indent-chars (delq ?: electric-indent-chars))))
+
+(global-auto-revert-mode t)

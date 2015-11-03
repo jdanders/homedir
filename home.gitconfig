@@ -1,0 +1,46 @@
+[user]
+  name = Jordan Anderson
+
+[core]
+  editor = emacs
+  pager = less -+$LESS -R
+  safecrlf = true
+
+#[status]
+#  showUntrackedFiles = no
+
+#[diff]
+#  tool = toolname_here
+#  guitool = toolname_here
+
+[merge]
+  tool = meld
+
+[alias]
+# Normal stuff
+  st = status
+  stu = status -uno #--untracked-files=no
+  sti = status --ignored
+  co = commit
+  ch = checkout
+  chb = checkout -b
+  br = branch
+  # Pull branch from origin and create local tracker (parameter is origin/bname)
+  pbr = checkout --track
+  # Push branch to origin
+  pu = "!git push --set-upstream origin `git rev-parse --abbrev-ref HEAD`"
+
+# Helpful long stuff from the internet
+  lg = log --graph --pretty=format:'%Cred%h%Creset %ad %s %C(yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=short
+  hist = log --graph --full-history --all --pretty=format:'%Cred%h%Creset %ad %s %C(yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=short
+  lol = log --graph --decorate --pretty=oneline --abbrev-commit
+  lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+  # To see full diff between branches:  git diff master..branch
+  brdiff = "!func() { git diff --name-status $1..$2; }; func"
+  mdiff = "!func() { git diff --name-status master..$1; }; func"
+
+[push]
+  default = simple
+
+[color]
+  ui = true
