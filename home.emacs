@@ -804,3 +804,17 @@ use std.textio.all;
             (setq electric-indent-chars (delq ?: electric-indent-chars))))
 
 (global-auto-revert-mode t)
+
+;Select python debugger
+(setq gud-pdb-command-name "python -m pdb")
+
+; Interactive buffer stuff
+(require 'ido)
+(ido-mode t)
+(setq ido-enable-flex-matching t)
+
+(defun pdb-set-trace ()
+  ;; http://www.emacswiki.org/emacs/InteractiveFunction
+  (interactive)
+  (insert "import pdb; pdb.set_trace()\n"))
+(global-set-key [(control ?x) (control ?d)] 'pdb-set-trace)
