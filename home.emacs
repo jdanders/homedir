@@ -813,8 +813,28 @@ use std.textio.all;
 (ido-mode t)
 (setq ido-enable-flex-matching t)
 
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(when (< emacs-major-version 24)
+  ;; For important compatibility libraries like cl-lib
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(package-initialize)
+
 (defun pdb-set-trace ()
   ;; http://www.emacswiki.org/emacs/InteractiveFunction
   (interactive)
   (insert "import pdb; pdb.set_trace()\n"))
-(global-set-key [(control ?x) (control ?d)] 'pdb-set-trace)
+(require 'python)
+(define-key python-mode-map [(control ?x) (control ?d)] 'pdb-set-trace)
+
+(require 'auto-complete)
+(global-auto-complete-mode t)
+
+(require 'yasnippet)
+(yas-global-mode)
+
+(define-key yas-minor-mode-map (kbd "<tab>") nil)
+(define-key yas-minor-mode-map (kbd "TAB") nil)
+(define-key yas-minor-mode-map (kbd "SPC") 'yas-expand)
+
