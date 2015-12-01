@@ -828,13 +828,23 @@ use std.textio.all;
 (require 'python)
 (define-key python-mode-map [(control ?x) (control ?d)] 'pdb-set-trace)
 
+(add-to-list 'load-path "~/homedir/emacs.d/popup-el")
+(add-to-list 'load-path "~/homedir/emacs.d/auto-complete")
 (require 'auto-complete)
+(add-to-list 'ac-dictionary-directories "~/homedir/emacs.d/auto-complete/ac-dict")
+(require 'auto-complete-config)
+(ac-config-default)
 (global-auto-complete-mode t)
 
+(add-to-list 'load-path "~/homedir/emacs.d/yasnippet/")
 (require 'yasnippet)
+(setq yas-snippet-dirs
+      '("~/homedir/emacs.d/snippets"                 ;; personal snippets
+        "~/homedir/emacs.d/yasnippet/snippets"         ;; the default collection
+        ))
 (yas-global-mode)
 
-(define-key yas-minor-mode-map (kbd "<tab>") nil)
-(define-key yas-minor-mode-map (kbd "TAB") nil)
-(define-key yas-minor-mode-map (kbd "SPC") 'yas-expand)
 
+;(define-key yas-minor-mode-map (kbd "<tab>") nil)
+;(define-key yas-minor-mode-map (kbd "TAB") nil)
+;(define-key yas-minor-mode-map (kbd "SPC") 'yas-expand)
