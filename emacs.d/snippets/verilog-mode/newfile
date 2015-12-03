@@ -1,0 +1,35 @@
+# name: New file template
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+// ${2:Description}
+
+\`default_nettype none
+
+module ${1:module_name} #( 
+  parameter NAME = "default"
+  )(
+  $0input wire i_$1_data,
+  output logic o_$1_data,
+
+  input wire i_$1_clk,
+  input wire i_$1_arst
+  );
+
+endmodule: $1
+
+\`default_nettype wire
+
+///////////////////////////////////////////////////////////////////////////////
+// ** SECTURION CONFIDENTIAL **
+//    Copyright `(insert (format-time-string "%Y"))` Secturion Systems
+//    All Rights Reserved.
+// NOTICE:  All information contained herein is, and remains the property of
+// Secturion Systems and its suppliers, if any. The intellectual and technical
+// concepts contained herein are proprietary to Secturion Systems and its
+// suppliers and may be covered by U.S. and Foreign Patents, patents in process,
+// and are protected by trade secret or copyright law.
+// Dissemination of this information or reproduction of this material
+// is strictly forbidden unless prior written permission is obtained
+// from Secturion Systems.
+///////////////////////////////////////////////////////////////////////////////
+

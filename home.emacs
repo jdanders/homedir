@@ -580,36 +580,34 @@ use std.textio.all;
 (setq auto-mode-alist (cons '("\\.v\\'" . verilog-mode) auto-mode-alist)) 
 ;; Any files in verilog mode should have their keywords colorized 
 (add-hook 'verilog-mode-hook '(lambda () (font-lock-mode 1)))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(column-number-mode t)
- '(comment-style (quote plain))
-; '(ediff-split-window-function (quote split-window-horizontally))
-; '(ediff-window-setup-function (quote ediff-setup-windows-plain))
- '(mouse-wheel-progressive-speed nil)
- '(python-indent 2)
- '(python-indent-offset 2)
- '(read-buffer-completion-ignore-case t)
- '(read-file-name-completion-ignore-case t)
- '(save-abbrevs (quote silently))
- '(show-paren-mode t nil (paren))
- '(show-paren-style (quote expression))
- '(tab-width 2)
- '(tool-bar-mode nil nil (tool-bar))
- '(vhdl-clock-edge-condition (quote function))
- '(vhdl-compiler "ModelSim")
- '(vhdl-include-direction-comments t)
- '(vhdl-include-group-comments (quote always))
- '(vhdl-project nil)
- '(vhdl-project-alist (quote (("example 1" "Project with individual source files" "" ("~/example1/vhdl/system.vhd" "~/example1/vhdl/component_*.vhd") "" nil "./" "work" "work/" "Makefile" "-------------------------------------------------------------------------------
+
+;; These were set by "custom" now changed to just setq
+(setq
+ column-number-mode t
+ comment-style (quote plain)
+;ediff-split-window-function (quote split-window-horizontally)
+;ediff-window-setup-function (quote ediff-setup-windows-plain)
+ mouse-wheel-progressive-speed nil
+ python-indent 2
+ python-indent-offset 2
+ read-buffer-completion-ignore-case t
+ read-file-name-completion-ignore-case t
+ save-abbrevs (quote silently)
+ show-paren-mode t
+ show-paren-style (quote expression)
+ tab-width 2
+ tool-bar-mode nil
+ vhdl-clock-edge-condition (quote function)
+ vhdl-compiler "ModelSim"
+ vhdl-include-direction-comments t
+ vhdl-include-group-comments (quote always)
+ vhdl-project nil
+ vhdl-project-alist (quote (("example 1" "Project with individual source files" "" ("~/example1/vhdl/system.vhd" "~/example1/vhdl/component_*.vhd") "" nil "./" "work" "work/" "Makefile" "-------------------------------------------------------------------------------
 -- This is a multi-line project description
 -- that can be used as a project dependent part of the file header.
-") ("example 2" "Project where source files are located in two directories" "" ("$EXAMPLE2/vhdl/components/" "$EXAMPLE2/vhdl/system/") "" nil "./" "work" "work/" "Makefile" "") ("example 3" "Project where source files are located in some directory trees" "" ("-r ~/example3/*/vhdl/") "" nil "./" "work" "work/" "Makefile" ""))))
- '(vhdl-testbench-initialize-signals t t)
- '(safe-local-variable-values (quote ((verilog-linter . "verilator --lint-only __FILE__")))))
+") ("example 2" "Project where source files are located in two directories" "" ("$EXAMPLE2/vhdl/components/" "$EXAMPLE2/vhdl/system/") "" nil "./" "work" "work/" "Makefile" "") ("example 3" "Project where source files are located in some directory trees" "" ("-r ~/example3/*/vhdl/") "" nil "./" "work" "work/" "Makefile" "")))
+ vhdl-testbench-initialize-signals t
+ safe-local-variable-values (quote ((verilog-linter . "verilator --lint-only __FILE__"))))
 
 
 
@@ -768,7 +766,7 @@ use std.textio.all;
       verilog-indent-level-module       2
       verilog-indent-level-declaration  2
       verilog-indent-level-behavioral   2
-      verilog-indent-level-directive    1
+      verilog-indent-level-directive    0
       verilog-indent-begin-after-if     nil
       verilog-indent-lists              t
       verilog-indent-declaration-macros nil
@@ -809,9 +807,9 @@ use std.textio.all;
 (setq gud-pdb-command-name "python -m pdb")
 
 ; Interactive buffer stuff
-(require 'ido)
-(ido-mode t)
-(setq ido-enable-flex-matching t)
+;(require 'ido)
+;(ido-mode t)
+;(setq ido-enable-flex-matching t)
 
 (require 'package)
 (add-to-list 'package-archives
@@ -848,3 +846,13 @@ use std.textio.all;
 ;(define-key yas-minor-mode-map (kbd "<tab>") nil)
 ;(define-key yas-minor-mode-map (kbd "TAB") nil)
 ;(define-key yas-minor-mode-map (kbd "SPC") 'yas-expand)
+
+;; Allow tab for autocomplete
+(setq completion-cycle-threshold t)
+;; Print possible completions
+(setq icomplete-mode t)
+
+;; Add 'substring' and 'initials' to list of completion options
+(setq completion-styles
+   (quote
+    (basic partial-completion emacs22 substring initials)))
