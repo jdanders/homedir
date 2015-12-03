@@ -251,7 +251,7 @@
 (setq vhdl-reset-kind  (quote sync))
 (setq vhdl-reset-active-high t)
 (setq vhdl-testbench-architecture-name '(".*" . "tb_arch"))
-(setq vhdl-testbench-initialize-signals nil)
+(setq vhdl-testbench-initialize-signals t)
 (setq vhdl-testbench-create-files 'none)
 (setq vhdl-conditions-in-parenthesis t)
 (setq vhdl-underscore-is-part-of-word t)
@@ -593,10 +593,8 @@ use std.textio.all;
  read-buffer-completion-ignore-case t
  read-file-name-completion-ignore-case t
  save-abbrevs (quote silently)
- show-paren-mode t
  show-paren-style (quote expression)
  tab-width 2
- tool-bar-mode nil
  vhdl-clock-edge-condition (quote function)
  vhdl-compiler "ModelSim"
  vhdl-include-direction-comments t
@@ -606,10 +604,9 @@ use std.textio.all;
 -- This is a multi-line project description
 -- that can be used as a project dependent part of the file header.
 ") ("example 2" "Project where source files are located in two directories" "" ("$EXAMPLE2/vhdl/components/" "$EXAMPLE2/vhdl/system/") "" nil "./" "work" "work/" "Makefile" "") ("example 3" "Project where source files are located in some directory trees" "" ("-r ~/example3/*/vhdl/") "" nil "./" "work" "work/" "Makefile" "")))
- vhdl-testbench-initialize-signals t
  safe-local-variable-values (quote ((verilog-linter . "verilator --lint-only __FILE__"))))
 
-
+(tool-bar-mode -1)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
