@@ -812,13 +812,15 @@ use std.textio.all;
 ;(ido-mode t)
 ;(setq ido-enable-flex-matching t)
 
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(when (< emacs-major-version 24)
+(when (> emacs-major-version 23)
+  (require 'package)
+  (add-to-list 'package-archives
+               '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+  (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-(package-initialize)
+    (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+  (package-initialize)
+  )
 
 (defun pdb-set-trace ()
   ;; http://www.emacswiki.org/emacs/InteractiveFunction
@@ -837,14 +839,15 @@ use std.textio.all;
 ;(ac-config-default)
 ;(global-auto-complete-mode t)
 
-(add-to-list 'load-path "~/homedir/emacs.d/yasnippet/")
-(require 'yasnippet)
-(setq yas-snippet-dirs
-      '("~/homedir/emacs.d/snippets"                 ;; personal snippets
-        "~/homedir/emacs.d/yasnippet/snippets"         ;; the default collection
-        ))
-(yas-global-mode)
-
+(when (> emacs-major-version 23)
+  (add-to-list 'load-path "~/homedir/emacs.d/yasnippet/")
+  (require 'yasnippet)
+  (setq yas-snippet-dirs
+        '("~/homedir/emacs.d/snippets"                 ;; personal snippets
+          "~/homedir/emacs.d/yasnippet/snippets"         ;; the default collection
+          ))
+  (yas-global-mode)
+  )
 
 ;(define-key yas-minor-mode-map (kbd "<tab>") nil)
 ;(define-key yas-minor-mode-map (kbd "TAB") nil)
