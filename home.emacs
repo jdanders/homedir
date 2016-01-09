@@ -47,11 +47,12 @@
 (set-cursor-color "white")
 
 ; Set screen size
+;(if (display-graphic-p)
 (if (< (display-pixel-width)  600)
     (add-to-list 'default-frame-alist '(width . 166)) ; character
     (add-to-list 'default-frame-alist '(height . 64)) ; lines
-    ;(set-frame-height (selected-frame) 64)
-    ;(set-frame-width (selected-frame) 166)
+    (set-frame-width (selected-frame) 166)
+    (set-frame-height (selected-frame) 64)
     (split-window-right)
     )
 
