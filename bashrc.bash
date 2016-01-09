@@ -1,7 +1,7 @@
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
 
-cp ~/.bash_history ~/.bash_history_backup
+if [ -s ~/.bash_history ]; then cp ~/.bash_history ~/.bash_history_backup; fi
 grep "^[^ ]" ~/.bash_history > ~/.bash_historytmp
 #mv ~/.bash_historytmp  ~/.bash_history
 awk '!seen[$0]++' ~/.bash_historytmp > ~/.bash_history
