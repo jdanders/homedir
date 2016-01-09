@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/bin/env python
 
 import os,sys,re
 
@@ -58,11 +58,13 @@ def compare_files(f1, f2):
   if f1only:
     header="*"*10 + "  Lines in " + f1 + " only  " + "*"*10
     print "*"*len(header) + "\n" + header + "\n" + "*"*len(header)
+    f1only.sort()
     print "\n".join(f1only)
     print 
   if f2only:
     header="*"*10 + "  Lines in " + f2 + " only  " + "*"*10
     print "*"*len(header) + "\n" + header + "\n" + "*"*len(header)
+    f2only.sort()
     print "\n".join(f2only)
     print
   if not (f1only+f2only):
