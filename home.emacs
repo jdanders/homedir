@@ -47,11 +47,14 @@
 (set-cursor-color "white")
 
 ; Set screen size
-(add-to-list 'default-frame-alist '(width . 166)) ; character
-(add-to-list 'default-frame-alist '(height . 64)) ; lines
-;(set-frame-height (selected-frame) 64)
-;(set-frame-width (selected-frame) 166)
-(split-window-right)
+(if (< (display-pixel-width)  600)
+    (add-to-list 'default-frame-alist '(width . 166)) ; character
+    (add-to-list 'default-frame-alist '(height . 64)) ; lines
+    ;(set-frame-height (selected-frame) 64)
+    ;(set-frame-width (selected-frame) 166)
+    (split-window-right)
+    )
+
 
 ;(setq ps-landscape-mode t)
 ;(setq ps-number-of-columns 2)
@@ -825,11 +828,13 @@ use std.textio.all;
 
 (add-to-list 'load-path "~/homedir/emacs.d/popup-el")
 (add-to-list 'load-path "~/homedir/emacs.d/auto-complete")
-(require 'auto-complete)
-(add-to-list 'ac-dictionary-directories "~/homedir/emacs.d/auto-complete/ac-dict")
-(require 'auto-complete-config)
-(ac-config-default)
-(global-auto-complete-mode t)
+
+; Autocomplete
+;(require 'auto-complete)
+;(add-to-list 'ac-dictionary-directories "~/homedir/emacs.d/auto-complete/ac-dict")
+;(require 'auto-complete-config)
+;(ac-config-default)
+;(global-auto-complete-mode t)
 
 (add-to-list 'load-path "~/homedir/emacs.d/yasnippet/")
 (require 'yasnippet)
@@ -845,9 +850,9 @@ use std.textio.all;
 ;(define-key yas-minor-mode-map (kbd "SPC") 'yas-expand)
 
 ;; Allow tab for autocomplete
-(setq completion-cycle-threshold t)
+;(setq completion-cycle-threshold t)
 ;; Print possible completions
-(setq icomplete-mode t)
+;(setq icomplete-mode t)
 
 ;; Add 'substring' and 'initials' to list of completion options
 (setq completion-styles
