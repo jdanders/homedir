@@ -4,7 +4,7 @@
 [core]
   editor = emacs
   pager = less -+$LESS -R
-  safecrlf = true
+  safecrlf = warn
 
 #[status]
 #  showUntrackedFiles = no
