@@ -44,7 +44,10 @@ shopt -s checkwinsize
 #
 # Uncomment to turn on programmable completion enhancements.
 # Any completions you add in ~/.bash_completion are sourced last.
-# [[ -f /etc/bash_completion ]] && . /etc/bash_completion
+[[ -f  ~/homedir/bash-completion/share/bash-completion/bash_completion ]] && .  ~/homedir/bash-completion/share/bash-completion/bash_completion
+
+# Use the git completion script provided with git
+[[ -f  ~/homedir/bash-completion/git-completion.bash ]] && source ~/homedir/bash-completion/git-completion.bash
 
 # History Options
 #
