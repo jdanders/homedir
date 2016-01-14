@@ -1,2 +1,2 @@
-#!/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 ls -l --color=auto "$@"

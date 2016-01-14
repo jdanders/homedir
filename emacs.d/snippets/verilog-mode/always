@@ -1,3 +1,0 @@
-always @(${1:posedge clk or reset == 1}) begin
-   $0
-end
