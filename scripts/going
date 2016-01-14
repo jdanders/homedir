@@ -1,2 +1,8 @@
 #!/bin/bash
-ps -e | grep "$@"
+result=`ps -e -o pid,uname,pcpu,pmem,time,command | grep "$@" | grep -v "grep ${@}" | grep -v "going ${@}"`
+rc=$?
+
+if [[ $rc == 0 ]]; then
+    ps -e -o pid,uname,pcpu,pmem,time,command | grep COMMAND | grep -v "grep COMMAND" 
+fi
+ps -e -o pid,uname,pcpu,pmem,time,command | grep "$@" | grep -v "grep ${@}" | grep -v "going ${@}"

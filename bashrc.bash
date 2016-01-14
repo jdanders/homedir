@@ -190,7 +190,6 @@ alias copy='cp'
 alias move='mv'
 alias dir='ls'
 
-alias lsd='ls -l --color | grep ^d --color=never'
 #alias ll='ls -l --color'
 
 #alias df='/bin/df'
