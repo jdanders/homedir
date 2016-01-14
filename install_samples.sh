@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/data/data/com.termux/files/usr/bin/applets/env python
 import os,sys
 
 files = [ii for ii in os.listdir('.') if "sample_" in ii]

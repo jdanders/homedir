@@ -1,3 +1,0 @@
-while (${1:condition}) begin
-   $0
-end // while($1)

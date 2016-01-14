@@ -1,2 +1,2 @@
-#!/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 find "$@" -maxdepth 1 -mindepth 1 -exec du -sh {} \; | sort -rh

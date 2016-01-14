@@ -613,7 +613,7 @@ use std.textio.all;
 ") ("example 2" "Project where source files are located in two directories" "" ("$EXAMPLE2/vhdl/components/" "$EXAMPLE2/vhdl/system/") "" nil "./" "work" "work/" "Makefile" "") ("example 3" "Project where source files are located in some directory trees" "" ("-r ~/example3/*/vhdl/") "" nil "./" "work" "work/" "Makefile" "")))
  safe-local-variable-values (quote ((verilog-linter . "verilator --lint-only __FILE__"))))
 
-(tool-bar-mode -1)
+;(tool-bar-mode -1)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

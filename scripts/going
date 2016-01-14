@@ -1,8 +1,9 @@
-#!/bin/bash
-result=`ps -e -o pid,uname,pcpu,pmem,time,command | grep "$@" | grep -v "grep ${@}" | grep -v "going ${@}"`
+#!/data/data/com.termux/files/usr/bin/bash
+result=`ps -e -o pid,user,time,comm | grep "$@" | grep -v "grep ${@}" | grep -v "going ${@}"`
 rc=$?
 
 if [[ $rc == 0 ]]; then
-    ps -e -o pid,uname,pcpu,pmem,time,command | grep COMMAND | grep -v "grep COMMAND" 
+    ps -e -o pid,user,time,comm | grep COMMAND | grep -v "grep COMMAND" 
 fi
-ps -e -o pid,uname,pcpu,pmem,time,command | grep "$@" | grep -v "grep ${@}" | grep -v "going ${@}"
+ps -e -o pid,user,time,comm | grep "$@" | grep -v "grep ${@}" | grep -v "going ${@}"
+
