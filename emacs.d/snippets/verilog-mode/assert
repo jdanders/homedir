@@ -1,0 +1,3 @@
+assert (${1:condition}) else begin
+   $${2:severity}("$0");
+end // assert $1
