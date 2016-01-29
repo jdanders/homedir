@@ -2009,8 +2009,9 @@ _xfunc()
     }
     "$@"
 }
-
 # source compat completion directory definitions
+
+if [ "$(uname -o)" != "Cygwin" ]; then
 if [[ -d $BASH_COMPLETION_COMPAT_DIR && -r $BASH_COMPLETION_COMPAT_DIR && \
     -x $BASH_COMPLETION_COMPAT_DIR ]]; then
     for i in $(LC_ALL=C command ls "$BASH_COMPLETION_COMPAT_DIR"); do
@@ -2018,6 +2019,7 @@ if [[ -d $BASH_COMPLETION_COMPAT_DIR && -r $BASH_COMPLETION_COMPAT_DIR && \
         [[ ${i##*/} != @($_backup_glob|Makefile*|$_blacklist_glob) \
             && -f $i && -r $i ]] && . "$i"
     done
+fi
 fi
 unset i _blacklist_glob
 
