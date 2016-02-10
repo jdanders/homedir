@@ -3,6 +3,8 @@
 ;; Import setting from ~/.local.emacs if it exists
 (condition-case nil (load "~/.local.emacs") (error nil))
 
+(add-to-list 'load-path "~/homedir/emacs.d")
+
 ;; Key bindings
 (global-set-key [f1] 'manual-entry)
 (global-set-key [f2] 'info)
@@ -849,6 +851,22 @@ use std.textio.all;
           ))
   (yas-global-mode)
   )
+
+(defun move-line-up ()
+  (interactive)
+  (transpose-lines 1)
+  (forward-line -2)
+  (electric-verilog-tab))
+
+(defun move-line-down ()
+  (interactive)
+  (forward-line 1)
+  (transpose-lines 1)
+  (forward-line -1)
+  (electric-verilog-tab))
+
+(global-set-key (kbd "M-<up>") 'move-line-up)
+(global-set-key (kbd "M-<down>") 'move-line-down)
 
 ;(define-key yas-minor-mode-map (kbd "<tab>") nil)
 ;(define-key yas-minor-mode-map (kbd "TAB") nil)
