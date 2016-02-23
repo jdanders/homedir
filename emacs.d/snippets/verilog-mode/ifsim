@@ -1,0 +1,4 @@
+`ifndef SYNTHESIS
+$0
+// endif SYNTHESIS
+`endif

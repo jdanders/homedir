@@ -1,3 +1,9 @@
-module ${1:module_name} (/*port details*/);
+module ${1:module_name} #(
+  // Add parameters
+  ) (
   $0
+  );
+
+// Body of module
+
 endmodule: $1
