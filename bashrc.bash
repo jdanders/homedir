@@ -8,7 +8,9 @@ if [ -s ~/.bash_history ]; then cp ~/.bash_history ~/.bash_history_backup; fi
 if [ -f ~/.bash_history ]; then grep "^[^ ]" ~/.bash_history > ~/.bash_historytmp; fi
 # Remove duplicate lines, keep most recent
 if [ -f ~/.bash_history ]; then
-    tac ~/.bash_historytmp | awk '!seen[$0]++' | tac  > ~/.bash_history;
+    tac ~/.bash_historytmp | awk '!seen[$0]++' > ~/.bash_history_tac
+    tac ~/.bash_history_tac > ~/.bash_history;
+    rm ~/.bash_history_tac
 fi
 
 # Import local environment settings
