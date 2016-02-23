@@ -1,10 +1,15 @@
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
 
+# Prune bash_history: remove lines starting with space, remove dulpicates
+# Keep a backup before manipulating just in case (if .bash_history > 0 bytes)
 if [ -s ~/.bash_history ]; then cp ~/.bash_history ~/.bash_history_backup; fi
-grep "^[^ ]" ~/.bash_history > ~/.bash_historytmp
-#mv ~/.bash_historytmp  ~/.bash_history
-awk '!seen[$0]++' ~/.bash_historytmp > ~/.bash_history
+# Remove lines starting with space
+if [ -f ~/.bash_history ]; then grep "^[^ ]" ~/.bash_history > ~/.bash_historytmp; fi
+# Remove duplicate lines, keep most recent
+if [ -f ~/.bash_history ]; then
+    tac ~/.bash_historytmp | awk '!seen[$0]++' | tac  > ~/.bash_history;
+fi
 
 # Import local environment settings
 [[ -f ~/.local.bash ]] && . ~/.local.bash
@@ -190,7 +195,6 @@ alias copy='cp'
 alias move='mv'
 alias dir='ls'
 
-alias lsd='ls -l --color | grep ^d --color=never'
 #alias ll='ls -l --color'
 
 #alias df='/bin/df'
