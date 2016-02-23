@@ -1,2 +1,2 @@
 #!/data/data/com.termux/files/usr/bin/bash
-ls -l --color "$@" | grep ^d --color=never
+ls -l --color "$@" | grep ^d
