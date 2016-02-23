@@ -1,0 +1,49 @@
+// Below are just some silly menus to demonstrate writing your
+// own configuration file.
+
+// Make some menus...
+menu apps {
+	mintty	exec	"mintty"
+#	"Emacs"	exec	"emacs"
+#	notepad	exec	notepad
+}
+
+menu help {
+	FAQ            EXEC "cygstart http://x.cygwin.com/docs/faq/cygwin-x-faq.html"
+	"User's Guide" EXEC "cygstart http://x.cygwin.com/docs/ug/cygwin-x-ug.html"
+	"View logfile" EXEC "mintty --title $XWINLOGFILE -e less +F $XWINLOGFILE"
+	"Reload .XWinrc"	RELOAD
+}
+menu root {
+#	"Applications"	menu	apps
+	"Open Terminal"	exec	"mintty"
+	"Help"	menu	help
+	SEParATOR
+}
+
+menu aot {
+	Separator
+	"Always on Top"	alwaysontop
+}
+
+menu xtermspecial {
+	"Emacs"		exec	"emacs"
+	"Always on Top"	alwaysontop
+	SepArAtor
+}
+
+RootMenu root
+
+DefaultSysMenu aot atend
+
+SysMenu {
+	"xterm"	xtermspecial atstart
+}
+
+
+
+
+SilentExit
+
+DEBUG "Done parsing the configuration file..."
+
