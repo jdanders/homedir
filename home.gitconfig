@@ -21,9 +21,9 @@
   st = status
   stu = status -uno #--untracked-files=no
   sti = status --ignored
-  co = commit
-  ch = checkout
-  chb = checkout -b
+  ci = commit
+  co = checkout
+  cob = checkout -b
   br = branch
   # Pull branch from origin and create local tracker (parameter is origin/bname)
   pbr = checkout --track
