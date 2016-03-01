@@ -197,6 +197,9 @@ alias dir='ls'
 
 #alias ll='ls -l --color'
 
+# Preserve path on sudo
+alias sudo='sudo env "PATH=$PATH"'
+
 #alias df='/bin/df'
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
