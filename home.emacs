@@ -832,8 +832,8 @@ use std.textio.all;
 (require 'python)
 (define-key python-mode-map [(control ?x) (control ?d)] 'pdb-set-trace)
 
-(add-to-list 'load-path "~/homedir/emacs.d/popup-el")
-(add-to-list 'load-path "~/homedir/emacs.d/auto-complete")
+;(add-to-list 'load-path "~/homedir/emacs.d/popup-el")
+;(add-to-list 'load-path "~/homedir/emacs.d/auto-complete")
 
 ; Autocomplete
 ;(require 'auto-complete)
@@ -881,3 +881,6 @@ use std.textio.all;
 (setq completion-styles
    (quote
     (basic partial-completion emacs22 substring initials)))
+
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
