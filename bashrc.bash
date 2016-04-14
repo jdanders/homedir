@@ -1,6 +1,8 @@
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
 
+USE_GIT_PROMPT=comment_me_out_if_not_wanted
+
 # Prune bash_history: remove lines starting with space, remove dulpicates
 # Keep a backup before manipulating just in case (if .bash_history > 0 bytes)
 if [ -s ~/.bash_history ]; then cp ~/.bash_history ~/.bash_history_backup; fi
@@ -53,6 +55,19 @@ shopt -s checkwinsize
 
 # Use the git completion script provided with git
 [[ -f  ~/homedir/bash-completion/git-completion.bash ]] && source ~/homedir/bash-completion/git-completion.bash
+
+if [ -n "${USE_GIT_PROMPT}" ]; then
+  # Use the git prompt script provided with git
+  # Options to change how the git prompt displays things
+  GIT_PS1_SHOWDIRTYSTATE=1 #show * for unstaged and + for staged changes
+  GIT_PS1_SHOWSTASHSTATE=1 #show $ if stash exists
+  #GIT_PS1_SHOWUNTRACKEDFILES=1 #show % is there are untracked files
+  #GIT_PS1_SHOWUPSTREAM="auto" #'auto' or 'verbose' print if HEAD and origin are off
+  #GIT_PS1_STATESEPARATOR=SP  #if not SP will change character between fields
+  GIT_PS1_SHOWCOLORHINTS=1 #show colors on state
+  #GIT_PS1_HIDE_IF_PWD_IGNORED=1 #don't show git prompt if in untracked directory
+  [[ -f ~/homedir/git-prompt.sh ]] && . ~/homedir/git-prompt.sh
+fi
 
 # History Options
 #
@@ -264,9 +279,21 @@ PS2='> '
 PS4='+ '
 # Now append a reset color when pushing 'Enter'
 trap 'printf "\e[0m" "$_"' DEBUG
+
+if [ -n "${USE_GIT_PROMPT}" ]; then
+PROMPT_COMMAND='__git_ps1  "${TITLEBAR}\
+$LIGHT_GRAY_BLUE\D{%b%d %H:%M}$NO_COLOR\
+$CYAN_ON_BLACK \h $YELLOW_ON_BLACK\w$NO_COLOR" "\
+\n$WHITE_ON_BLACK: "'
+# The variables don't survive to the shell, so put in the non-readable ones
+PROMPT_COMMAND='__git_ps1  "${TITLEBAR}\
+\[\033[1;47;1;34m\]\D{%b%d %H:%M}\[\033[0m\]\
+\[\033[1;40;1;36m\] \h \[\033[1;40;1;33m\]\w\[\033[0m\]" "\
+\n\[\033[1;40;1;37m\]: "'
+fi
+
 }
 proml
-
 
 export PATH=$PATH:/sbin:/usr/sbin
 export PATH=~/homedir/scripts:$PATH
