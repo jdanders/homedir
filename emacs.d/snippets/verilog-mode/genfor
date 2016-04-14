@@ -1,5 +1,6 @@
+genvar ${1:gen_i};
 generate
-  for (genvar ${1:gen_i}=0; $1 < ${2:loop_limit}; $1++) begin: $1_gen
+  for ($1=0; $1 < ${2:loop_limit}; $1++) begin: $1_gen
    $0
   end // for($1)
 endgenerate
