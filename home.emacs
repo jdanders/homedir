@@ -828,7 +828,7 @@ use std.textio.all;
 (defun pdb-set-trace ()
   ;; http://www.emacswiki.org/emacs/InteractiveFunction
   (interactive)
-  (insert "import pdb; pdb.set_trace()\n"))
+  (insert "import pdb; pdb.set_trace()"))
 (require 'python)
 (define-key python-mode-map [(control ?x) (control ?d)] 'pdb-set-trace)
 
