@@ -672,9 +672,9 @@ use std.textio.all;
 ;(set-default-font "-outline-Consolas-normal-r-normal-normal-13-*-96-96-c-*-iso8859-1")
 
 ; Enable middle mouse button dragging in the correct direction
-(require 'mouse-drag)
-(global-set-key [down-mouse-2] 'mouse-drag-throw)
-(setq mouse-throw-with-scroll-bar t)
+;(require 'mouse-drag)
+;(global-set-key [down-mouse-2] 'mouse-drag-throw)
+;(setq mouse-throw-with-scroll-bar t)
 
 ; Revert .24 behavior, mouse drag copies to both primary and clipboard
 (setq mouse-drag-copy-region t)
