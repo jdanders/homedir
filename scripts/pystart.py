@@ -3,6 +3,8 @@ from time import sleep
 from pprint import pprint
 home = os.path.expanduser('~')
 from math import log,ceil
+sys.ps1 = '\001\033[96m\002>>> \001\033[0m\002'
+sys.ps2 = '\001\033[96m\002... \001\033[0m\002'
 def clog2(num):
   return int(ceil(log(num,2)))
 if (sys.version_info > (3, 0)):
