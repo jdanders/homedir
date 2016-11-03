@@ -595,8 +595,8 @@ use std.textio.all;
 ;ediff-split-window-function (quote split-window-horizontally)
 ;ediff-window-setup-function (quote ediff-setup-windows-plain)
  mouse-wheel-progressive-speed nil
- python-indent 2
- python-indent-offset 2
+ python-indent 4
+ python-indent-offset 4
  read-buffer-completion-ignore-case t
  read-file-name-completion-ignore-case t
  save-abbrevs (quote silently)
@@ -884,3 +884,6 @@ use std.textio.all;
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+
+;; Disable color when grepping
+(setq grep-program "grep --color=never")
