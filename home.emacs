@@ -772,10 +772,11 @@ use std.textio.all;
       verilog-indent-level-behavioral   2
       verilog-indent-level-directive    0
       verilog-indent-begin-after-if     nil
-      verilog-indent-lists              t
+      verilog-indent-lists              nil
       verilog-indent-declaration-macros nil
       verilog-case-indent               2
       verilog-auto-newline              nil
+      verilog-auto-lineup               nil
       verilog-minimum-comment-distance  12
       verilog-align-ifelse              t
       verilog-auto-endcomments          nil
