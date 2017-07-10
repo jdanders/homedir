@@ -888,3 +888,5 @@ use std.textio.all;
 
 ;; Disable color when grepping
 (setq grep-program "grep --color=never")
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
