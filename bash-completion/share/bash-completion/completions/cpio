@@ -7,27 +7,27 @@ _cpio()
 
     # --name value style option
     case $prev in
-        -H|--format)
+        --format|-!(-*)H)
             COMPREPLY=( $( compgen -W \
                 'bin odc newc crc tar ustar hpbin hpodc' -- "$cur" ) )
-            return 0
+            return
             ;;
-        -E|-F|-I|--file|--pattern-file)
+        --file|--pattern-file|-!(-*)[EFI])
             _filedir
-            return 0
+            return
             ;;
-        -R|--owner)
+        --owner|-!(-*)R)
             _usergroup
-            return 0
+            return
             ;;
         --rsh-command)
             compopt -o filenames
             COMPREPLY=( $( compgen -c -- "$cur" ) )
-            return 0
+            return
             ;;
     esac
 
-    $split && return 0
+    $split && return
 
     if [[ $cword -eq 1 ]]; then
         COMPREPLY=( $( compgen -W '-o --create -i --extract -p --pass-through
@@ -75,4 +75,4 @@ _cpio()
 } &&
 complete -F _cpio cpio
 
-# ex: ts=4 sw=4 et filetype=sh
+# ex: filetype=sh

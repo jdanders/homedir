@@ -6,10 +6,10 @@ _hostname()
     _init_completion || return
 
     case $prev in
-        -h|--help|-V|--version)
+        --help|--version|-!(-*)[hV])
             return
             ;;
-        -F|--file)
+        --file|-!(-*)F)
             _filedir
             return
             ;;
@@ -20,4 +20,4 @@ _hostname()
 } &&
 complete -F _hostname hostname
 
-# ex: ts=4 sw=4 et filetype=sh
+# ex: filetype=sh

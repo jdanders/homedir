@@ -6,10 +6,10 @@ _acpi()
     _init_completion || return
 
     case $prev in
-        -h|--help|-v|--version)
+        --help|--version|-!(-*)[hv])
             return
             ;;
-        -d|--directory)
+        --directory|-!(-*)d)
             _filedir -d
             return
             ;;
@@ -19,4 +19,4 @@ _acpi()
 } &&
 complete -F _acpi acpi
 
-# ex: ts=4 sw=4 et filetype=sh
+# ex: filetype=sh

@@ -6,7 +6,11 @@ _ssh_add()
     _init_completion || return
 
     case $prev in
-        -t|-s|-e)
+        -t)
+            return
+            ;;
+        -s|-e)
+            _filedir so
             return
             ;;
     esac
@@ -20,4 +24,4 @@ _ssh_add()
 } &&
 complete -F _ssh_add ssh-add
 
-# ex: ts=4 sw=4 et filetype=sh
+# ex: filetype=sh

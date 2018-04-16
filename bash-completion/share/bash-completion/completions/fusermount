@@ -6,14 +6,14 @@ _fusermount()
     _init_completion || return
 
     case $prev in
-        -h|-V|-o)
-            return 0
+        -*[hVo])
+            return
             ;;
-        -u)
+        -*u)
             COMPREPLY=( $( compgen -W "$( awk \
                 '{ if ($3 ~ /^fuse(\.|$)/) print $2 }' /etc/mtab \
                 2>/dev/null )" -- "$cur" ) )
-            return 0
+            return
             ;;
     esac
 
@@ -25,4 +25,4 @@ _fusermount()
 } &&
 complete -F _fusermount fusermount
 
-# ex: ts=4 sw=4 et filetype=sh
+# ex: filetype=sh
