@@ -62,8 +62,8 @@
 
 ;(setq ps-landscape-mode t)
 ;(setq ps-number-of-columns 2)
-;(setq ps-printer-name t) 
-;(setq ps-lpr-command "c:\\program files\\pdfcreator\\pdfcreator.bat") 
+;(setq ps-printer-name t)
+;(setq ps-lpr-command "c:\\program files\\pdfcreator\\pdfcreator.bat")
 ;(setq ps-lpr-switches )
 
 ;; DEFAULTS
@@ -72,7 +72,7 @@
 (transient-mark-mode t)
 
 ; Auto fill in all major modes
-;(setq-default auto-fill-function 'do-auto-fill) 
+;(setq-default auto-fill-function 'do-auto-fill)
 
 ; Automagically read compressed files
 (auto-compression-mode 1)
@@ -93,7 +93,7 @@
 (show-paren-mode 1)
 
 ; always use spaces instead of tabs
-(setq-default indent-tabs-mode        nil)  
+(setq-default indent-tabs-mode        nil)
 
 ; Show line and column numbers in modeline
 (line-number-mode t)
@@ -148,7 +148,7 @@
 ;;; The following lines force emacs incremental searches to pop up a small
 ;;; window when doing incremental searches.  Under most circumstances this
 ;;; is desireable because it reduces the length of screen refreshes during
-;;; incremental searches. 
+;;; incremental searches.
 (setq search-slow-speed                 38400)   ; essentially always
 (setq search-slow-window-lines          15)
 
@@ -211,7 +211,7 @@
 (global-set-key "\C-c\C-p" 'pound-comment-start)
 (global-set-key "\C-c\C-z" 'pound-comment-start)
 
-; Define a variable for the new make system 
+; Define a variable for the new make system
 (defvar vhdl-compile-new-make t
   "If non-nil, vhdl-compile-new-make overrides the VHDL compiler settings and does 'make [buffer_name]'")
 
@@ -276,15 +276,15 @@ use std.textio.all;
 
   process
   begin
-  
+
     i_reset <= '1';
-  
+
     wait until (i_clk'event) and (i_clk = '0');
     wait until (i_clk'event) and (i_clk = '0');
     wait until (i_clk'event) and (i_clk = '0');
-  
+
     i_reset <= '0';
-  
+
     wait;
 
   end process;"
@@ -368,7 +368,7 @@ use std.textio.all;
 	  (unless (vhdl-standard-p '87) (vhdl-insert-keyword "ENTITY "))
 	  (insert ent-name ";")
 	  ;(insert "\n\n") (indent-to margin)
-	  ;(vhdl-comment-display-line) 
+	  ;(vhdl-comment-display-line)
 	  (insert "\n"))
 	;; get architecture name
 	(setq arch-name
@@ -462,7 +462,7 @@ use std.textio.all;
 ;  "Keymap for VHDL Mode.")
 ;
 ;(define-key vhdl-mode-map "\C-c\C-p\C-t" 'vhdl-port-paste-testbench)
-      
+
 (global-unset-key "\C-c-C-p-C-p")
 ;(global-set-key "\C-c-C-p-C-p" 'vhdl-port-paste-testbench-no-library)
 (global-set-key "\C-c-C-p-C-p" 'testbench)
@@ -478,7 +478,7 @@ use std.textio.all;
 
 ;; MODES
 
-; CPerl mode 
+; CPerl mode
 ;  Make it the default perl editing mode.
 ; Modify the alist - back to Cperl section, breaks elsewhere
 (defun modify-alist (alist-symbol key value &optional search-cdr)
@@ -500,7 +500,7 @@ use std.textio.all;
       cperl-continued-statement-offset 4
       cperl-brace-offset -4
       cperl-label-offset -4
-      )         
+      )
 
 
 ; Flash paren mode (didn't have to do this in XEmacs !)
@@ -555,7 +555,7 @@ use std.textio.all;
 ;  (interactive)
 ;  (insert (format-time-string "%A, %B %e, %Y %k:%M:%S %z")))
 
-; Compute the length of the marked region 
+; Compute the length of the marked region
 ;(defun region-length ()
 ;  "length of a region"
 ;  (interactive)
@@ -575,17 +575,17 @@ use std.textio.all;
 ;  (goto-char (point-min))
 ;  (while (search-forward "\n" nil t) (replace-match "\r\n")))
 (defun prepend-path ( my-path )
-(setq load-path (cons (expand-file-name my-path) load-path))) 
+(setq load-path (cons (expand-file-name my-path) load-path)))
 
-(defun append-path ( my-path ) 
-(setq load-path (append load-path (list (expand-file-name my-path))))) 
-;; Look first in the directory ~/elisp for elisp files 
-(prepend-path "~/elisp") 
-;; Load verilog mode only when needed 
-(autoload 'verilog-mode "verilog-mode" "Verilog mode" t ) 
-;; Any files that end in .v should be in verilog mode 
-(setq auto-mode-alist (cons '("\\.v\\'" . verilog-mode) auto-mode-alist)) 
-;; Any files in verilog mode should have their keywords colorized 
+(defun append-path ( my-path )
+(setq load-path (append load-path (list (expand-file-name my-path)))))
+;; Look first in the directory ~/elisp for elisp files
+(prepend-path "~/elisp")
+;; Load verilog mode only when needed
+(autoload 'verilog-mode "verilog-mode" "Verilog mode" t )
+;; Any files that end in .v should be in verilog mode
+(setq auto-mode-alist (cons '("\\.v\\'" . verilog-mode) auto-mode-alist))
+;; Any files in verilog mode should have their keywords colorized
 (add-hook 'verilog-mode-hook '(lambda () (font-lock-mode 1)))
 
 ;; These were set by "custom" now changed to just setq
@@ -890,3 +890,7 @@ use std.textio.all;
 (setq grep-program "grep --color=never")
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+; 25.2 changes this behavior, set it back
+(add-to-list 'display-buffer-alist
+     '("^\\*shell\\*$" . (display-buffer-same-window)))

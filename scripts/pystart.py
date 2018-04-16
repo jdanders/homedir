@@ -15,3 +15,4 @@ else:
   execfile(home+'/homedir/scripts/hexecho.py')
 hexoff
 print ("Imported os,sys,re,sleep,pprint. Defined clog2,hexon/hexoff")
+# to interact in python 2: !import code; code.interact(local=vars())
