@@ -211,6 +211,9 @@ alias copy='cp'
 alias move='mv'
 alias dir='ls'
 
+#Clear screen and scroll-back buffer
+alias cls="echo -ne '\033c'"
+
 #alias ll='ls -l --color'
 
 # Preserve path on sudo
