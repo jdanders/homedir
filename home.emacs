@@ -902,4 +902,4 @@ use std.textio.all;
 
 ; Enable grizzl
 (require 'grizzl)
-(setq projectile-completion-system "grizzl")
+(setq projectile-completion-system (quote grizzl))
