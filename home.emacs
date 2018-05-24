@@ -899,3 +899,7 @@ use std.textio.all;
 (setq projectile-keymap-prefix (kbd "C-x p"))
 (require 'projectile)
 (projectile-global-mode)
+
+; Enable grizzl
+(require 'grizzl)
+(setq projectile-completion-system "grizzl")
