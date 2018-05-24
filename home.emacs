@@ -894,3 +894,8 @@ use std.textio.all;
 ; 25.2 changes this behavior, set it back
 (add-to-list 'display-buffer-alist
      '("^\\*shell\\*$" . (display-buffer-same-window)))
+
+; Enable projectile
+(setq projectile-keymap-prefix (kbd "C-x p"))
+(require 'projectile)
+(projectile-global-mode)
