@@ -131,7 +131,7 @@
 (set-face-background 'region "grey60")
 
 ; Paren matching
-(set-face-background 'show-paren-mismatch-face "magenta")
+(set-face-background 'show-paren-mismatch "magenta")
 
 ; Font lock faces
 (set-face-foreground 'font-lock-comment-face "palegreen")
