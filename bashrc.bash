@@ -6,7 +6,8 @@ USE_GIT_PROMPT=comment_me_out_if_not_wanted
 # Prune bash_history: remove lines starting with space, remove dulpicates
 # Keep a backup before manipulating just in case (if .bash_history > 0 bytes)
 if [ -s ~/.bash_history ]; then cp ~/.bash_history ~/.bash_history_backup;
-else cp ~/.bash_history_backup ~/.bash_history; fi
+else if [ -s ~/.bash_history ];
+     then cp ~/.bash_history_backup ~/.bash_history; fi; fi
 # Remove lines starting with space
 if [ -f ~/.bash_history ]; then grep "^[^ ]" ~/.bash_history > ~/.bash_historytmp; fi
 # Remove duplicate lines, keep most recent
