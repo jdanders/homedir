@@ -108,19 +108,30 @@ fi
 # alias du='du -h'
 #
 # Misc :)
-# alias less='less -r'                          # raw control characters
-# alias whence='type -a'                        # where, of a sort
-# alias grep='grep --color'                     # show differences in colour
-# alias egrep='egrep --color=auto'              # show differences in colour
-# alias fgrep='fgrep --color=auto'              # show differences in colour
-#
-# Some shortcuts for different directory listings
-# alias ls='ls -hF --color=tty'                 # classify files in colour
-# alias dir='ls --color=auto --format=vertical'
-# alias vdir='ls --color=auto --format=long'
-# alias ll='ls -l'                              # long list
-# alias la='ls -A'                              # all but . and ..
-# alias l='ls -CF'                              #
+alias whence='type -a'                        # where, of a sort
+
+#export LANG=en_US
+alias more='less'
+alias copy='cp'
+alias move='mv'
+
+#Clear screen and scroll-back buffer
+alias cls="echo -ne '\033c'"
+
+# Preserve path on sudo
+alias sudo='sudo env "PATH=$PATH"'
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    eval "`dircolors -b`"
+    alias ls='ls --color=auto'
+    alias dir='ls --color=auto --format=single-column'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+    alias xgrep='xargs grep --color=auto'
+fi
 
 # Umask
 #
@@ -205,33 +216,6 @@ cd_func ()
 
 alias cd=cd_func
 alias d='dirs -v'
-
-#export LANG=en_US
-alias more='less'
-alias copy='cp'
-alias move='mv'
-alias dir='ls'
-
-#Clear screen and scroll-back buffer
-alias cls="echo -ne '\033c'"
-
-#alias ll='ls -l --color'
-
-# Preserve path on sudo
-alias sudo='sudo env "PATH=$PATH"'
-
-#alias df='/bin/df'
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    eval "`dircolors -b`"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
 
 # make autocomplete case insensitive
 #if [[ $- =~ "i" ]] checks for interactive session. Don't echo if scp
