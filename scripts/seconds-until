@@ -1,3 +1,2 @@
 #!/bin/bash
-echo "'$*'"
 expr `date -d "$*" +%s` - `date -d "now" +%s`
