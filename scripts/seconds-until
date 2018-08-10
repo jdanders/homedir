@@ -1,2 +1,5 @@
 #!/bin/bash
-expr `date -d "$*" +%s` - `date -d "now" +%s`
+DELAY=$(expr `date -d "$*" +%s` - `date -d "now" +%s`)
+HOURS=$(echo "scale=1; ${DELAY} / 3600"|bc)
+(>&2 echo "$DELAY seconds, or about $HOURS hours")
+echo $DELAY
