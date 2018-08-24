@@ -1,2 +1,2 @@
-typedef enum {$0_ST, _ST} ${1:state_name}_t;
+typedef enum int unsigned {$0_ST, _ST} ${1:state_name}_t;
 $1_t $1_state;
