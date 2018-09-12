@@ -1,3 +1,3 @@
-foreach (${1:x}[i]) begin
+foreach (${1:var}[ii]) begin
    $0
 end
