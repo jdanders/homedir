@@ -4,16 +4,27 @@
 USE_GIT_PROMPT=comment_me_out_if_not_wanted
 
 # Prune bash_history: remove lines starting with space, remove dulpicates
-# Keep a backup before manipulating just in case (if .bash_history > 0 bytes)
-if [ -s ~/.bash_history ]; then cp ~/.bash_history ~/.bash_history_backup;
-else if [ -s ~/.bash_history ];
-     then cp ~/.bash_history_backup ~/.bash_history; fi; fi
-# Remove lines starting with space
-if [ -f ~/.bash_history ]; then grep "^[^ ]" ~/.bash_history > ~/.bash_historytmp; fi
-# Remove duplicate lines, keep most recent
-if [ -f ~/.bash_history ]; then
-    tac ~/.bash_historytmp | awk '!seen[$0]++' | tac  > ~/.bash_history;
+# Keep a backup before manipulating just in case (if .bash_history > 100 bytes)
+prune_history ()
+{
+if (( $(stat -c%s ~/.bash_history) > 100 )); then
+    cp ~/.bash_history ~/.bash_history_backup;
+# Otherwise restore bash_history if there's a backup
+else
+    echo "Warning, no history"
+    if ! [ -s ~/.bash_history ]; then
+        cp ~/.bash_history_backup ~/.bash_history
+    fi
 fi
+# Remove lines starting with space
+if [ -s ~/.bash_history ]; then
+    grep "^[^ ]" ~/.bash_history > ~/.bash_historytmp
+# Remove duplicate lines, keep most recent
+    tac ~/.bash_historytmp | awk '!seen[$0]++' | tac  > ~/.bash_history;
+    rm ~/.bash_historytmp
+fi
+}
+prune_history
 
 # Import local environment settings
 [[ -f ~/.local.bash ]] && . ~/.local.bash
@@ -228,11 +239,11 @@ shopt -s histappend
 PROMPT_COMMAND=`history -a`
 # don't put duplicate lines in the history. See bash(1) for more options
 # don't overwrite GNU Midnight Commander's setting of `ignorespace'.
-export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
+export HISTCONTROL=$HISTCONTROL${HISTCONTROL+:}ignoredups:erasedups
 # ... or force ignoredups and ignorespace
 #export HISTCONTROL=ignoreboth
 export HISTIGNORE=$'&: [fb]g:[fb]g:exit'
-export HISTSIZE=8192
+export HISTSIZE=false
 #export GREP_OPTIONS=--color=auto
 
 # Set prompt format
