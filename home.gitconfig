@@ -42,6 +42,7 @@
   brdiff = "!func() { git diff --name-status $1..$2; }; func"
   mdiff = "!func() { git diff --name-status master..$1; }; func"
   pushrev = !sh -c 'git push origin $1:master' -
+  clobber = commit -a --amend --no-edit
 
 [push]
   default = simple
