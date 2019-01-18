@@ -7,6 +7,7 @@ USE_GIT_PROMPT=comment_me_out_if_not_wanted
 # Keep a backup before manipulating just in case (if .bash_history > 100 bytes)
 prune_history ()
 {
+sync
 if (( $(stat -c%s ~/.bash_history) > 100 )); then
     cp ~/.bash_history ~/.bash_history_backup;
 # Otherwise restore bash_history if there's a backup
@@ -23,8 +24,11 @@ if [ -s ~/.bash_history ]; then
     tac ~/.bash_historytmp | awk '!seen[$0]++' | tac  > ~/.bash_history;
     rm ~/.bash_historytmp
 fi
+sync
 }
-prune_history
+# Run function with flock to prevent corruption
+{ flock -n 19 || echo "History locked, waiting..."; } 19>.lock
+{ flock 19 || echo "Failed"; prune_history; } 19>/tmp/.lock
 
 # Import local environment settings
 [[ -f ~/.local.bash ]] && . ~/.local.bash
