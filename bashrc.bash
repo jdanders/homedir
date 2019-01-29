@@ -13,7 +13,7 @@ if (( $(stat -c%s ~/.bash_history) > 100 )); then
 # Otherwise restore bash_history if there's a backup
 else
     echo "Warning, no history"
-    if ! [ -s ~/.bash_history ]; then
+    if [ -e ~/.bash_history_backup ]; then
         cp ~/.bash_history_backup ~/.bash_history
     fi
 fi
