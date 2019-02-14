@@ -27,8 +27,8 @@ fi
 sync
 }
 # Run function with flock to prevent corruption
-{ flock -n 19 || echo "History locked, waiting..."; } 19>.lock
-{ flock 19 || echo "Failed"; prune_history; } 19>/tmp/.lock
+#{ flock -n 19 || echo "History locked, waiting..."; } 19>.lock
+#{ flock 19 || echo "Failed"; prune_history; } 19>/tmp/.lock
 
 # Import local environment settings
 [[ -f ~/.local.bash ]] && . ~/.local.bash
