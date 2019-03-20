@@ -136,6 +136,9 @@ alias cls="echo -ne '\033c'"
 # Preserve path on sudo
 alias sudo='sudo env "PATH=$PATH"'
 
+# Ignore non-storage file systems
+alias df="df -xsquashfs -xtmpfs -xdevtmpfs"
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     eval "`dircolors -b`"
