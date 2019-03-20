@@ -903,3 +903,7 @@ use std.textio.all;
 ; Enable grizzl
 (require 'grizzl)
 (setq projectile-completion-system (quote grizzl))
+
+; scad-mode for openscad
+(autoload 'scad-mode "scad-mode" "A major mode for editing OpenSCAD code." t)
+(add-to-list 'auto-mode-alist '("\\.scad$" . scad-mode))
