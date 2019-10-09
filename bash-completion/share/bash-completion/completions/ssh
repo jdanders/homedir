@@ -2,9 +2,9 @@
 
 _ssh_queries()
 {
-    COMPREPLY+=( $( compgen -W \
-        "cipher cipher-auth mac kex key key-cert key-plain protocol-version" \
-        -- "$cur" ) )
+    COMPREPLY+=( $(compgen -W \
+        "cipher cipher-auth mac kex key key-cert key-plain protocol-version sig" \
+        -- "$cur") )
 }
 
 _ssh_query()
@@ -14,30 +14,29 @@ _ssh_query()
 
 _ssh_ciphers()
 {
-    local ciphers='$( _ssh_query "$1" cipher )'
+    local ciphers='$(_ssh_query "$1" cipher)'
     [[ $ciphers ]] || ciphers="3des-cbc aes128-cbc aes192-cbc aes256-cbc
         aes128-ctr aes192-ctr aes256-ctr arcfour128 arcfour256 arcfour
         blowfish-cbc cast128-cbc"
-    COMPREPLY+=( $( compgen -W "$ciphers" -- "$cur" ) )
+    COMPREPLY+=( $(compgen -W "$ciphers" -- "$cur") )
 }
 
 _ssh_macs()
 {
-    local macs='$( _ssh_query "$1" mac )'
+    local macs='$(_ssh_query "$1" mac)'
     [[ $macs ]] || macs="hmac-md5 hmac-sha1 umac-64@openssh.com hmac-ripemd160
         hmac-sha1-96 hmac-md5-96"
-    COMPREPLY+=( $( compgen -W "$macs" -- "$cur" ) )
+    COMPREPLY+=( $(compgen -W "$macs" -- "$cur") )
 }
 
 _ssh_options()
 {
-    compopt -o nospace
-    COMPREPLY=( $( compgen -S = -W 'AddKeysToAgent AddressFamily BatchMode
-        BindAddress CanonicalDomains CanonicalizeFallbackLocal
-        CanonicalizeHostname CanonicalizeMaxDots CanonicalizePermittedCNAMEs
-        CertificateFile ChallengeResponseAuthentication CheckHostIP Cipher
-        Ciphers ClearAllForwardings Compression CompressionLevel
-        ConnectionAttempts ConnectTimeout ControlMaster ControlPath
+    local opts=(
+        AddKeysToAgent AddressFamily BatchMode BindAddress CanonicalDomains
+        CanonicalizeFallbackLocal CanonicalizeHostname CanonicalizeMaxDots
+        CanonicalizePermittedCNAMEs CASignatureAlgorithms CertificateFile
+        ChallengeResponseAuthentication CheckHostIP Ciphers ClearAllForwardings
+        Compression ConnectionAttempts ConnectTimeout ControlMaster ControlPath
         ControlPersist DynamicForward EnableSSHKeysign EscapeChar
         ExitOnForwardFailure FingerprintHash ForwardAgent ForwardX11
         ForwardX11Timeout ForwardX11Trusted GatewayPorts GlobalKnownHostsFile
@@ -50,14 +49,26 @@ _ssh_options()
         LocalCommand LocalForward LogLevel MACs
         NoHostAuthenticationForLocalhost NumberOfPasswordPrompts
         PasswordAuthentication PermitLocalCommand PKCS11Provider Port
-        PreferredAuthentications Protocol ProxyCommand ProxyJump ProxyUseFdpass
-        PubkeyAcceptedKeyTypes PubkeyAuthentication RekeyLimit RemoteForward
-        RequestTTY RevokedHostKeys RhostsRSAAuthentication RSAAuthentication
-        SendEnv ServerAliveCountMax ServerAliveInterval SmartcardDevice
-        StreamLocalBindMask StreamLocalBindUnlink StrictHostKeyChecking
-        TCPKeepAlive Tunnel TunnelDevice UpdateHostKeys UsePrivilegedPort User
-        UserKnownHostsFile VerifyHostKeyDNS VisualHostKey XAuthLocation' \
-        -- "$cur" ) )
+        PreferredAuthentications ProxyCommand ProxyJump ProxyUseFdpass
+        PubkeyAcceptedKeyTypes PubkeyAuthentication RekeyLimit RemoteCommand
+        RemoteForward RequestTTY RevokedHostKeys SendEnv ServerAliveCountMax
+        ServerAliveInterval SmartcardDevice StreamLocalBindMask
+        StreamLocalBindUnlink StrictHostKeyChecking SyslogFacility TCPKeepAlive
+        Tunnel TunnelDevice UpdateHostKeys UsePrivilegedPort User
+        UserKnownHostsFile VerifyHostKeyDNS VisualHostKey XAuthLocation )
+    local protocols=$(_ssh_query "$1" protocol-version)
+    if [[ -z $protocols || $protocols == *1* ]]; then
+        opts+=( Cipher CompressionLevel Protocol RhostsRSAAuthentication
+                RSAAuthentication )
+    fi
+
+    compopt -o nospace
+    local IFS=$' \t\n' reset=$(shopt -p nocasematch); shopt -s nocasematch
+    local option
+    COMPREPLY=( $(for option in "${opts[@]}"; do
+                      [[ $option == "$cur"* ]] && printf '%s=\n' "$option"
+                  done) )
+    $reset
 }
 
 # Complete a ssh suboption (like ForwardAgent=y<tab>)
@@ -70,83 +81,108 @@ _ssh_suboption()
     # Split into subopt and subval
     local prev=${1%%=*} cur=${1#*=}
 
-    case $prev in
-        BatchMode|CanonicalDomains|CanonicalizeFallbackLocal|\
-        ChallengeResponseAuthentication|CheckHostIP|\
-        ClearAllForwardings|ControlPersist|Compression|EnableSSHKeysign|\
-        ExitOnForwardFailure|ForwardAgent|ForwardX11|ForwardX11Trusted|\
-        GatewayPorts|GSSAPIAuthentication|GSSAPIKeyExchange|\
-        GSSAPIDelegateCredentials|GSSAPIRenewalForcesRekey|GSSAPITrustDns|\
-        HashKnownHosts|HostbasedAuthentication|IdentitiesOnly|\
-        KbdInteractiveAuthentication|KbdInteractiveDevices|\
-        NoHostAuthenticationForLocalhost|PasswordAuthentication|\
-        ProxyUseFdpass|PubkeyAuthentication|RhostsRSAAuthentication|\
-        RSAAuthentication|StrictHostKeyChecking|StreamLocalBindUnlink|\
-        TCPKeepAlive|UsePrivilegedPort|VerifyHostKeyDNS|VisualHostKey)
-            COMPREPLY=( $( compgen -W 'yes no' -- "$cur" ) )
+    case ${prev,,} in
+        batchmode|canonicaldomains|canonicalizefallbacklocal|\
+        challengeresponseauthentication|checkhostip|\
+        clearallforwardings|controlpersist|compression|enablesshkeysign|\
+        exitonforwardfailure|forwardagent|forwardx11|forwardx11trusted|\
+        gatewayports|gssapiauthentication|gssapikeyexchange|\
+        gssapidelegatecredentials|gssapirenewalforcesrekey|gssapitrustdns|\
+        hashknownhosts|hostbasedauthentication|identitiesonly|\
+        kbdinteractiveauthentication|kbdinteractivedevices|\
+        nohostauthenticationforlocalhost|passwordauthentication|permitlocalcommand|\
+        proxyusefdpass|pubkeyauthentication|rhostsrsaauthentication|\
+        rsaauthentication|streamlocalbindunlink|\
+        tcpkeepalive|useprivilegedport|visualhostkey)
+            COMPREPLY=( $(compgen -W 'yes no' -- "$cur") )
             ;;
-        AddKeysToAgent)
-            COMPREPLY=( $( compgen -W 'yes ask confirm no' -- "$cur" ) )
+        addkeystoagent)
+            COMPREPLY=( $(compgen -W 'yes ask confirm no' -- "$cur") )
             ;;
-        AddressFamily)
-            COMPREPLY=( $( compgen -W 'any inet inet6' -- "$cur" ) )
+        addressfamily)
+            COMPREPLY=( $(compgen -W 'any inet inet6' -- "$cur") )
             ;;
-        BindAddress)
+        bindaddress)
             _ip_addresses
             ;;
-        CanonicalizeHostname)
-            COMPREPLY=( $( compgen -W 'yes no always' -- "$cur" ) )
+        canonicalizehostname)
+            COMPREPLY=( $(compgen -W 'yes no always' -- "$cur") )
             ;;
-        *File|IdentityAgent|Include)
+        *file|identityagent|include|controlpath|revokedhostkeys|xauthlocation)
             _filedir
             ;;
-        Cipher)
-            COMPREPLY=( $( compgen -W 'blowfish des 3des' -- "$cur" ) )
+        casignaturealgorithms)
+            COMPREPLY=( $(compgen -W '$(_ssh_query "$2" sig)' -- "$cur") )
             ;;
-        Ciphers)
+        cipher)
+            COMPREPLY=( $(compgen -W 'blowfish des 3des' -- "$cur") )
+            ;;
+        ciphers)
             _ssh_ciphers "$2"
             ;;
-        CompressionLevel)
-            COMPREPLY=( $( compgen -W '{1..9}' -- "$cur" ) )
+        controlmaster)
+            COMPREPLY=( $(compgen -W 'yes ask auto autoask no' -- "$cur") )
             ;;
-        FingerprintHash)
-            COMPREPLY=( $( compgen -W 'md5 sha256' -- "$cur" ) )
+        compressionlevel)
+            COMPREPLY=( $(compgen -W '{1..9}' -- "$cur") )
             ;;
-        IPQoS)
-            COMPREPLY=( $( compgen -W 'af1{1..4} af2{2..3} af3{1..3} af4{1..3}
-                cs{0..7} ef lowdelay throughput reliability' -- "$cur" ) )
+        fingerprinthash)
+            COMPREPLY=( $(compgen -W 'md5 sha256' -- "$cur") )
             ;;
-        HostbasedKeyTypes|HostKeyAlgorithms)
-            COMPREPLY=( $( compgen -W '$( _ssh_query "$2" key )' -- "$cur" ) )
+        ipqos)
+            COMPREPLY=( $(compgen -W 'af1{1..4} af2{2..3} af3{1..3} af4{1..3}
+                cs{0..7} ef lowdelay throughput reliability' -- "$cur") )
             ;;
-        KexAlgorithms)
-            COMPREPLY=( $( compgen -W '$( _ssh_query "$2" kex )' -- "$cur" ) )
+        hostbasedkeytypes|hostkeyalgorithms)
+            COMPREPLY=( $(compgen -W '$(_ssh_query "$2" key)' -- "$cur") )
             ;;
-        MACs)
+        kexalgorithms)
+            COMPREPLY=( $(compgen -W '$(_ssh_query "$2" kex)' -- "$cur") )
+            ;;
+        loglevel)
+            COMPREPLY=( $(compgen -W 'QUIET FATAL ERROR INFO VERBOSE DEBUG{,1,2,3}' -- "$cur") )
+            ;;
+        macs)
             _ssh_macs "$2"
             ;;
-        PreferredAuthentications)
-            COMPREPLY=( $( compgen -W 'gssapi-with-mic host-based publickey
-                keyboard-interactive password' -- "$cur" ) )
+        pkcs11provider)
+            _filedir so
             ;;
-        Protocol)
-            COMPREPLY=( $( compgen -W '1 2 1,2 2,1' -- "$cur" ) )
+        preferredauthentications)
+            COMPREPLY=( $(compgen -W 'gssapi-with-mic host-based publickey
+                keyboard-interactive password' -- "$cur") )
             ;;
-        ProxyJump)
+        protocol)
+            local protocols=( $(_ssh_query "$2" protocol-version) )
+            [[ $protocols ]] || protocols=(1 2)
+            if [[ ${#protocols[@]} -gt 1 ]]; then
+                COMPREPLY=( $(compgen -W '${protocols[@]}' -- "$cur") )
+            fi
+            ;;
+        proxyjump)
             _known_hosts_real -a -F "$configfile" -- "$cur"
             ;;
-        PubkeyAcceptedKeyTypes)
-            COMPREPLY=( $( compgen -W '$( _ssh_query "$2" key )' -- "$cur" ) )
+        proxycommand|remotecommand|localcommand)
+            COMPREPLY=( $(compgen -c -- "$cur") )
             ;;
-        RequestTTY)
-            COMPREPLY=( $( compgen -W 'no yes force auto' -- "$cur" ) )
+        pubkeyacceptedkeytypes)
+            COMPREPLY=( $(compgen -W '$(_ssh_query "$2" key)' -- "$cur") )
             ;;
-        Tunnel)
-            COMPREPLY=( $( compgen -W 'yes no point-to-point ethernet' \
-                    -- "$cur" ) )
+        requesttty)
+            COMPREPLY=( $(compgen -W 'no yes force auto' -- "$cur") )
             ;;
-        UpdateHostKeys)
-            COMPREPLY=( $( compgen -W 'yes no ask' -- "$cur" ) )
+        stricthostkeychecking)
+            COMPREPLY=( $(compgen -W 'accept-new ask no off' -- "$cur") )
+            ;;
+        syslogfacility)
+            COMPREPLY=( $(compgen -W 'DAEMON USER AUTH LOCAL{0..7}' -- "$cur") )
+            ;;
+        tunnel)
+            COMPREPLY=( $(compgen -W 'yes no point-to-point ethernet' \
+                                  -- "$cur") )
+            ;;
+        updatehostkeys|verifyhostkeydns)
+            COMPREPLY=( $(compgen -W 'yes no ask' -- "$cur") )
             ;;
     esac
     return 0
@@ -159,7 +195,7 @@ _ssh_suboption_check()
 {
     # Get prev and cur words without splitting on =
     local cureq=`_get_cword :=` preveq=`_get_pword :=`
-    if [[ $cureq == *=* && $preveq == -o ]]; then
+    if [[ $cureq == *=* && $preveq == -*o ]]; then
         _ssh_suboption $cureq "$1"
         return $?
     fi
@@ -199,53 +235,56 @@ _ssh()
     local ipvx
 
     case $prev in
-        -4|-6)
-            ipvx=$prev
+        -*4*)
+            ipvx=-4
             ;;
-        -b)
+        -*6*)
+            ipvx=-6
+            ;;
+        -*b)
             _ip_addresses
             return
             ;;
-        -c)
+        -*c)
             _ssh_ciphers "$1"
             return
             ;;
-        -D|-e|-L|-p|-R|-W)
+        -*[DeLpRW])
             return
             ;;
-        -E|-F|-i|-S)
+        -*[EFiS])
             _filedir
             return
             ;;
-        -I)
+        -*I)
             _filedir so
             return
             ;;
-        -J)
+        -*J)
             _known_hosts_real -a -F "$configfile" -- "$cur"
             return
             ;;
-        -l)
-            COMPREPLY=( $( compgen -u -- "$cur" ) )
+        -*l)
+            COMPREPLY=( $(compgen -u -- "$cur") )
             return
             ;;
-        -m)
+        -*m)
             _ssh_macs "$1"
             return
             ;;
-        -O)
-            COMPREPLY=( $( compgen -W 'check forward exit stop' -- "$cur" ) )
+        -*O)
+            COMPREPLY=( $(compgen -W 'check forward cancel exit stop' -- "$cur") )
             return
             ;;
-        -o)
-            _ssh_options
+        -*o)
+            _ssh_options "$1"
             return
             ;;
-        -Q)
+        -*Q)
             _ssh_queries "$1"
             return
             ;;
-        -w)
+        -*w)
             _available_interfaces
             return
             ;;
@@ -258,7 +297,7 @@ _ssh()
         COMPREPLY=( "${COMPREPLY[@]/#/-F}" )
         cur=-F$cur  # Restore cur
     elif [[ "$cur" == -* ]]; then
-        COMPREPLY=( $( compgen -W '$( _parse_usage "$1" )' -- "$cur" ) )
+        COMPREPLY=( $(compgen -W '$(_parse_usage "$1")' -- "$cur") )
     else
         _known_hosts_real $ipvx -a -F "$configfile" -- "$cur"
 
@@ -266,7 +305,7 @@ _ssh()
         _count_args
         if [[ $args -gt 1 ]]; then
             compopt -o filenames
-            COMPREPLY+=( $( compgen -c -- "$cur" ) )
+            COMPREPLY+=( $(compgen -c -- "$cur") )
         fi
     fi
 } &&
@@ -287,25 +326,32 @@ _sftp()
     local ipvx
 
     case $prev in
-        -4|-6)
-            ipvx=$prev
+        -*4*)
+            ipvx=-4
             ;;
-        -B|-D|-l|-P|-R|-s)
+        -*6*)
+            ipvx=-6
+            ;;
+        -*[BDlPRs])
             return
             ;;
-        -b|-F|-i)
+        -*[bFi])
             _filedir
             return
             ;;
-        -c)
+        -*c)
             _ssh_ciphers
             return
             ;;
-        -o)
+        -*J)
+            _known_hosts_real -a -F "$configfile" -- "$cur"
+            return
+            ;;
+        -*o)
             _ssh_options
             return
             ;;
-        -S)
+        -*S)
             _command
             return
             ;;
@@ -318,7 +364,7 @@ _sftp()
         COMPREPLY=( "${COMPREPLY[@]/#/-F}" )
         cur=-F$cur  # Restore cur
     elif [[ "$cur" == -* ]]; then
-        COMPREPLY=( $( compgen -W '$( _parse_usage "$1" )' -- "$cur" ) )
+        COMPREPLY=( $(compgen -W '$(_parse_usage "$1")' -- "$cur") )
     else
         _known_hosts_real $ipvx -a -F "$configfile" -- "$cur"
     fi
@@ -341,7 +387,7 @@ _scp_remote_files()
     local path=${cur#*:}
 
     # unescape (3 backslashes to 1 for chars we escaped)
-    path=$( command sed -e 's/\\\\\\\('$_scp_path_esc'\)/\\\1/g' <<<"$path" )
+    path=$(command sed -e 's/\\\\\\\('$_scp_path_esc'\)/\\\1/g' <<<"$path")
 
     # default to home dir of specified user on remote host
     if [[ -z $path ]]; then
@@ -351,16 +397,16 @@ _scp_remote_files()
     local files
     if [[ $1 == -d ]]; then
         # escape problematic characters; remove non-dirs
-        files=$( ssh -o 'Batchmode yes' $userhost \
+        files=$(ssh -o 'Batchmode yes' $userhost \
             command ls -aF1dL "$path*" 2>/dev/null | \
-            command sed -e 's/'$_scp_path_esc'/\\\\\\&/g' -e '/[^\/]$/d' )
+            command sed -e 's/'$_scp_path_esc'/\\\\\\&/g' -e '/[^\/]$/d')
     else
         # escape problematic characters; remove executables, aliases, pipes
         # and sockets; add space at end of file names
-        files=$( ssh -o 'Batchmode yes' $userhost \
+        files=$(ssh -o 'Batchmode yes' $userhost \
             command ls -aF1dL "$path*" 2>/dev/null | \
             command sed -e 's/'$_scp_path_esc'/\\\\\\&/g' -e 's/[*@|=]$//g' \
-            -e 's/[^\/]$/& /g' )
+            -e 's/[^\/]$/& /g')
     fi
     COMPREPLY+=( $files )
 }
@@ -380,10 +426,10 @@ _scp_local_files()
     fi
 
     if $dirsonly ; then
-        COMPREPLY+=( $( command ls -aF1dL $cur* 2>/dev/null | \
+        COMPREPLY+=( $(command ls -aF1dL $cur* 2>/dev/null | \
             command sed -e "s/$_scp_path_esc/\\\\&/g" -e '/[^\/]$/d' -e "s/^/$1/") )
     else
-        COMPREPLY+=( $( command ls -aF1dL $cur* 2>/dev/null | \
+        COMPREPLY+=( $(command ls -aF1dL $cur* 2>/dev/null | \
             command sed -e "s/$_scp_path_esc/\\\\&/g" -e 's/[*@|=]$//g' \
             -e 's/[^\/]$/& /g' -e "s/^/$1/") )
     fi
@@ -407,27 +453,34 @@ _scp()
     local ipvx
 
     case $prev in
-        -4|-6)
-            ipvx=$prev
+        -*4*)
+            ipvx=-4
             ;;
-        -c)
+        -*6*)
+            ipvx=-6
+            ;;
+        -*c)
             _ssh_ciphers
             COMPREPLY=( "${COMPREPLY[@]/%/ }" )
             return
             ;;
-        -F|-i)
+        -*[Fi])
             _filedir
             compopt +o nospace
             return
             ;;
-        -l|-P)
+        -*J)
+            _known_hosts_real -a -F "$configfile" -- "$cur"
             return
             ;;
-        -o)
+        -*[lP])
+            return
+            ;;
+        -*o)
             _ssh_options
             return
             ;;
-        -S)
+        -*S)
             _command
             compopt +o nospace
             return
@@ -449,8 +502,8 @@ _scp()
     else
         case $cur in
             -*)
-                COMPREPLY=( $( compgen -W '$( _parse_usage "${words[0]}" )' \
-                    -- "$cur" ) )
+                COMPREPLY=( $(compgen -W '$(_parse_usage "${words[0]}")' \
+                    -- "$cur") )
                 COMPREPLY=( "${COMPREPLY[@]/%/ }" )
                 return
                 ;;

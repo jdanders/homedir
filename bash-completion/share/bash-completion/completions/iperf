@@ -3,16 +3,17 @@
 _iperf()
 {
     local cur prev words cword split
-    _init_completion -s || return
+    _init_completion -s -n : || return
 
     case $prev in
         --help|--version|--interval|--len|--port|--window|--mss|--bandwidth|\
-        --num|--time|--listenport|--parallel|--ttl|--linux-congestion|\
-        -!(-*)[hvilpwMbntLPTZ])
+        --num|--time|--listenport|--parallel|--ttl|--linux-congestion|--omit|\
+        --congestion|--bytes|--blockcount|--cport|--set-mss|--flowlabel|\
+        --title|--tos|--affinity|-!(-*)[hvilpwMbntLPTZCkOSA])
             return
             ;;
         --format|-!(-*)f)
-            COMPREPLY=( $( compgen -W 'k m K M' -- "$cur" ) )
+            COMPREPLY=( $(compgen -W 'k m g K M G' -- "$cur") )
             return
             ;;
         --output|--fileinput|-!(-*)[oF])
@@ -21,7 +22,8 @@ _iperf()
             ;;
         --bind|-!(-*)B)
             _available_interfaces -a
-            _ip_addresses
+            _ip_addresses -a
+            __ltrim_colon_completions "$cur"
             return
             ;;
         --client|-!(-*)c)
@@ -29,11 +31,15 @@ _iperf()
             return
             ;;
         --reportexclude|-!(-*)x)
-            COMPREPLY=( $( compgen -W 'C D M S V' -- "$cur" ) )
+            COMPREPLY=( $(compgen -W 'C D M S V' -- "$cur") )
             return
             ;;
         --reportstyle|-!(-*)y)
-            COMPREPLY=( $( compgen -W 'C' -- "$cur" ) )
+            COMPREPLY=( $(compgen -W 'C' -- "$cur") )
+            return
+            ;;
+        --logfile)
+            _filedir log
             return
             ;;
     esac
@@ -42,22 +48,22 @@ _iperf()
 
     # Filter mode specific options
     local i filter=cat
-    for i in ${words[@]}; do
+    for i in "${words[@]}"; do
         case $i in
             -s|--server)
-                filter='command sed -e /^Client.specific/,/^$/d'
+                filter='command sed -e /^Client.specific/,/^\(Server.specific.*\)\?$/d'
                 ;;
             -c|--client)
-                filter='command sed -e /^Server.specific/,/^$/d'
+                filter='command sed -e /^Server.specific/,/^\(Client.specific.*\)\?$/d'
                 ;;
         esac
     done
     [[ $filter != cat ]] && filter+=' -e /--client/d -e /--server/d'
 
-    COMPREPLY=( $( compgen -W \
-        '$( "$1" --help 2>&1 | $filter | _parse_help - )' -- "$cur" ) )
+    COMPREPLY=( $(compgen -W \
+        '$("$1" --help 2>&1 | $filter | _parse_help -)' -- "$cur") )
     [[ $COMPREPLY == *= ]] && compopt -o nospace
 } &&
-complete -F _iperf iperf
+complete -F _iperf iperf iperf3
 
 # ex: filetype=sh
