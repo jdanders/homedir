@@ -49,4 +49,5 @@
   default = simple
 
 [color]
-  ui = true
+  ui = always
+  status = always
