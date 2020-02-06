@@ -130,8 +130,11 @@ alias more='less'
 alias copy='cp'
 alias move='mv'
 
-#Clear screen and scroll-back buffer
+# Clear screen and scroll-back buffer
 alias cls="echo -ne '\033c'"
+
+# Reset terminal windows size to 60x80
+alias fixwidth='resize -s 60 80'
 
 # Preserve path on sudo
 alias sudo='sudo env "PATH=$PATH"'
