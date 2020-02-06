@@ -49,5 +49,7 @@
   default = simple
 
 [color]
-  ui = always
   status = always
+
+[color "diff"]
+  meta = yellow black bold
