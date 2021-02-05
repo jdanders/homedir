@@ -48,6 +48,9 @@
 [push]
   default = simple
 
+[pull]
+	ff = only
+
 [color]
   status = always
 
