@@ -1,87 +1,87 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os,sys,re
 
 strict_check = False
 case_check = True
 if (len(sys.argv) > 1) and sys.argv[1] == "s":
-  strict_check = True
+    strict_check = True
 
 if (len(sys.argv) > 1) and sys.argv[1] == "c":
-  case_check = False
+    case_check = False
 
 #f1="file1.txt";f2="file2.txt"
 
 #Strip out all non-alpha characters for very loose compare
 def alpha_only(txt):
-  retval = ""
-  for ii in txt:
-    if ii.isalnum():
-      retval += ii
-  return retval
+    retval = ""
+    for ii in txt:
+        if ii.isalnum():
+            retval += ii
+    return retval
 
 #Check each line in l1 and see if present in l2
 def loop_lines(l1, l2):
-  l1only = []
-  for full, reduced in l1.iteritems():
-    found = False
-    for check in l2.values():
-      if reduced == check:
-        found = True
-        break
-    if not found:
-      l1only.append(full)
-  return l1only
+    l1only = []
+    for full, reduced in l1.items():
+        found = False
+        for check in l2.values():
+            if reduced == check:
+                found = True
+                break
+        if not found:
+            l1only.append(full)
+    return l1only
 
 def compare_files(f1, f2):
-  flines1 = open(f1,'r').readlines()
-  flines2 = open(f2,'r').readlines()
-  reduced_dic1 = {}
-  reduced_dic2 = {}
-  if strict_check:
-    for line in flines1:
-      reduced_dic1[line.strip()] = line.strip()
-    for line in flines2:
-      reduced_dic2[line.strip()] = line.strip()
-  elif not case_check:
-    for line in flines1:
-      reduced_dic1[line.strip()] = alpha_only(line).lower()
-    for line in flines2:
-      reduced_dic2[line.strip()] = alpha_only(line).lower()
-  else:
-    for line in flines1:
-      reduced_dic1[line.strip()] = alpha_only(line)
-    for line in flines2:
-      reduced_dic2[line.strip()] = alpha_only(line)
-  f1only = loop_lines(reduced_dic1,reduced_dic2)
-  f2only = loop_lines(reduced_dic2,reduced_dic1)
-  if f1only:
-    header="*"*10 + "  Lines in " + f1 + " only  " + "*"*10
-    print "*"*len(header) + "\n" + header + "\n" + "*"*len(header)
-    f1only.sort()
-    print "\n".join(f1only)
-    print 
-  if f2only:
-    header="*"*10 + "  Lines in " + f2 + " only  " + "*"*10
-    print "*"*len(header) + "\n" + header + "\n" + "*"*len(header)
-    f2only.sort()
-    print "\n".join(f2only)
-    print
-  if not (f1only+f2only):
+    flines1 = open(f1,'r').readlines()
+    flines2 = open(f2,'r').readlines()
+    reduced_dic1 = {}
+    reduced_dic2 = {}
     if strict_check:
-      print "No unique lines"
+        for line in flines1:
+            reduced_dic1[line.strip()] = line.strip()
+        for line in flines2:
+            reduced_dic2[line.strip()] = line.strip()
+    elif not case_check:
+        for line in flines1:
+            reduced_dic1[line.strip()] = alpha_only(line).lower()
+        for line in flines2:
+            reduced_dic2[line.strip()] = alpha_only(line).lower()
     else:
-      print "No loosely unique lines, try adding 's' as first parameter for strict checking"
+        for line in flines1:
+            reduced_dic1[line.strip()] = alpha_only(line)
+        for line in flines2:
+            reduced_dic2[line.strip()] = alpha_only(line)
+    f1only = loop_lines(reduced_dic1,reduced_dic2)
+    f2only = loop_lines(reduced_dic2,reduced_dic1)
+    if f1only:
+        header="*"*10 + "    Lines in " + f1 + " only    " + "*"*10
+        print("*"*len(header) + "\n" + header + "\n" + "*"*len(header))
+        f1only.sort()
+        print("\n".join(f1only))
+        print()
+    if f2only:
+        header="*"*10 + "    Lines in " + f2 + " only    " + "*"*10
+        print("*"*len(header) + "\n" + header + "\n" + "*"*len(header))
+        f2only.sort()
+        print("\n".join(f2only))
+        print()
+    if not (f1only+f2only):
+        if strict_check:
+            print("No unique lines")
+        else:
+            print("No loosely unique lines, try adding 's' as first parameter for strict checking")
 
 ## MAIN ##
 if len(sys.argv) < 3:
-  print "Usage:",sys.argv[0],"[sc] file1 file2"
-  print "  [s] optionally perform strict character for character comparison"
-  print "  [c] optionally ignore case in comparison"
+    print("Usage:",sys.argv[0],"[sc] file1 file2")
+    print("    [s] optionally perform strict character for character comparison")
+    print("    [c] optionally ignore case in comparison")
 else:
-  if sys.argv[1] == "c" or  sys.argv[1] == "s":
-    compare_files(sys.argv[2],sys.argv[3])
-  else:
-    compare_files(sys.argv[1],sys.argv[2])
+    if sys.argv[1] == "c" or    sys.argv[1] == "s":
+        compare_files(sys.argv[2],sys.argv[3])
+    else:
+        compare_files(sys.argv[1],sys.argv[2])
 
 #l1=reduced_dic1;l2=reduced_dic2
