@@ -298,7 +298,7 @@ $CYAN_ON_BLACK \h $YELLOW_ON_BLACK\w$NO_COLOR" "\
 # The variables don't survive to the shell, so put in the non-readable ones
 PROMPT_COMMAND='__git_ps1  "${TITLEBAR}\
 \[\033[1;47;1;34m\]\D{%b%d %H:%M}\[\033[0m\]\
-\[\033[1;40;1;36m\] \h \[\033[1;40;1;33m\]\w\[\033[0m\]" "\
+\[\033[1;40;1;36m\] \h:\[\033[1;40;1;33m\]\w\[\033[0m\]" "\
 \n\[\033[1;40;1;37m\]: "'
 fi
 

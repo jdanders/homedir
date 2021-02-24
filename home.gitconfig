@@ -49,7 +49,11 @@
   default = simple
 
 [pull]
-	ff = only
+  ff = only
+  rebase = true
+
+[rebase]
+  autoStash = true
 
 [color]
   status = always
