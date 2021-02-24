@@ -125,6 +125,9 @@ fi
 # Misc :)
 alias whence='type -a'                        # where, of a sort
 
+# Pretty print the path
+alias path='echo $PATH | tr -s ":" "\n"'
+
 #export LANG=en_US
 alias more='less'
 alias copy='cp'

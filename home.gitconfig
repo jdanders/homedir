@@ -14,7 +14,7 @@
 #  guitool = toolname_here
 
 [diff]
-   renames = copy
+  renames = copy
 
 [merge]
   tool = meld
