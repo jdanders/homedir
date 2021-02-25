@@ -850,7 +850,7 @@ use std.textio.all;
         '("~/homedir/emacs.d/snippets"                 ;; personal snippets
           "~/homedir/emacs.d/yasnippet/snippets"         ;; the default collection
           ))
-  (yas-global-mode)
+  (yas-global-mode 1)
   )
 
 (defun move-line-up ()
