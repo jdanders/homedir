@@ -20,7 +20,7 @@ _ulimit()
             ;;
     esac
 
-    if [[ ! -v mode ]]; then
+    if [[ -z $mode ]]; then
         local word
         for word in "${words[@]}"; do
             [[ $word == -*a* ]] && return

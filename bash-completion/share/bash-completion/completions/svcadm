@@ -112,7 +112,7 @@ _svcadm()
         fi
     done
 
-    if [[ ! -v command ]]; then
+    if [[ -z $command ]]; then
         if [[ ${cur} == -* ]]; then
             COMPREPLY=($(compgen -W "-v" -- ${cur}))
         else

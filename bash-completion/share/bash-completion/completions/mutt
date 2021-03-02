@@ -31,7 +31,7 @@ _muttrc()
         shift
     done
 
-    if [[ ! -v muttrc ]]; then
+    if [[ -z $muttrc ]]; then
         if [[ -f ~/.${muttcmd}rc ]]; then
             muttrc=\~/.${muttcmd}rc
         elif [[ -f ~/.${muttcmd}/${muttcmd}rc ]]; then

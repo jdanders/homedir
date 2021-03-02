@@ -29,7 +29,7 @@ _carton()
         esac
     done
 
-    if [[ ! -v command ]]; then
+    if [[ -z $command ]]; then
         _carton_commands "$1"
         return
     fi

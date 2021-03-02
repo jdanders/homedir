@@ -66,14 +66,14 @@ _xrandr()
             return
             ;;
         --left-of | --right-of | --above | --below | --same-as)
-            if [[ -v output ]]; then
+            if [[ -n $output ]]; then
                 local outputs=$(_comp_cmd_xrandr_outputs "$1")
                 COMPREPLY=($(compgen -W "$outputs" -- "$cur"))
             fi
             return
             ;;
         --mode)
-            if [[ -v output ]]; then
+            if [[ -n $output ]]; then
                 local modes=$(_comp_cmd_xrandr_modes "$1" "$output")
                 COMPREPLY=($(compgen -W "$modes" -- "$cur"))
             fi
@@ -86,19 +86,19 @@ _xrandr()
             return
             ;;
         --reflect)
-            if [[ -v output ]]; then
+            if [[ -n $output ]]; then
                 COMPREPLY=($(compgen -W 'normal x y xy' -- "$cur"))
             fi
             return
             ;;
         --rotate)
-            if [[ -v output ]]; then
+            if [[ -n $output ]]; then
                 COMPREPLY=($(compgen -W 'normal inverted left right' -- "$cur"))
             fi
             return
             ;;
         --filter)
-            if [[ -v output ]]; then
+            if [[ -n $output ]]; then
                 COMPREPLY=($(compgen -W 'bilinear nearest' -- "$cur"))
             fi
             return
@@ -170,7 +170,7 @@ _xrandr()
     fi
 
     local options
-    if [[ -v output ]]; then
+    if [[ -n $output ]]; then
         options=$(
             _comp_cmd_xrandr_help "$1" |
                 command sed -e 's/ or /\n  /g' -e 's/<[^>]*>]//g' |

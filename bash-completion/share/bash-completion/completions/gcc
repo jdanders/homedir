@@ -44,7 +44,7 @@ _gcc()
         prefix="$prev "
     fi
 
-    if [[ ! -v argument ]]; then
+    if [[ -z $argument ]]; then
         _filedir
     else
         # In situation like '-fsanitize=add' $cur is equal to last token.

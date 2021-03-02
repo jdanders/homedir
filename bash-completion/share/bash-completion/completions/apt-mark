@@ -13,7 +13,7 @@ _comp_cmd_apt_mark()
         fi
     done
 
-    if [[ -v special ]]; then
+    if [[ -n $special ]]; then
         case $special in
             auto | manual | unhold)
                 local -A showcmds=([auto]=manual [manual]=auto [unhold]=hold)

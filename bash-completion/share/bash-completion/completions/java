@@ -21,7 +21,7 @@ _java_find_classpath()
     done
 
     # default to environment
-    [[ ! -v classpath ]] && classpath=${CLASSPATH-}
+    [[ -z $classpath ]] && classpath=${CLASSPATH-}
 
     # default to current directory
     [[ -z $classpath ]] && classpath=.
@@ -41,7 +41,7 @@ _java_find_sourcepath()
     done
 
     # default to classpath
-    if [[ ! -v sourcepath ]]; then
+    if [[ -z $sourcepath ]]; then
         local classpath
         _java_find_classpath
         sourcepath=$classpath

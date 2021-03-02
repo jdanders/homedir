@@ -26,7 +26,7 @@ _apt_get()
         fi
     done
 
-    if [[ -v special ]]; then
+    if [[ -n $special ]]; then
         case $special in
             remove | autoremove | purge)
                 _comp_cmd_apt_get_installed_packages

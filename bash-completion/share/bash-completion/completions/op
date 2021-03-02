@@ -39,15 +39,15 @@ _op()
         esac
     done
 
-    if [[ ! -v command && $cur == -* ]]; then
+    if [[ -z $command && $cur == -* ]]; then
         COMPREPLY=($(compgen -W '$(_parse_usage "$1" --help)' -- "$cur"))
         [[ ${COMPREPLY-} == *= ]] && compopt -o nospace
         return
     fi
 
-    [[ -v command ]] && _op_command_options "$1" && return
+    [[ -n $command ]] && _op_command_options "$1" && return
 
-    if [[ ! -v command || $command == "$prev" ]]; then
+    if [[ -z $command || $command == "$prev" ]]; then
         COMPREPLY=($(compgen -W '$(_op_commands "$1" ${command-})' -- "$cur"))
         [[ ${COMPREPLY-} ]] && return
     fi

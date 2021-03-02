@@ -248,7 +248,7 @@ __reassemble_comp_words_by_ref()
     # Default to cword unchanged
     printf -v "$3" %s "$COMP_CWORD"
     # Are characters excluded which were former included?
-    if [[ -v exclude ]]; then
+    if [[ -n $exclude ]]; then
         # Yes, list of word completion separators has shrunk;
         line=$COMP_LINE
         # Re-assemble words to complete
@@ -402,19 +402,19 @@ _get_comp_words_by_ref()
 
     __get_cword_at_cursor_by_ref "${exclude-}" words cword cur
 
-    [[ -v vcur ]] && {
+    [[ -n $vcur ]] && {
         upvars+=("$vcur")
         upargs+=(-v $vcur "$cur")
     }
-    [[ -v vcword ]] && {
+    [[ -n $vcword ]] && {
         upvars+=("$vcword")
         upargs+=(-v $vcword "$cword")
     }
-    [[ -v vprev && $cword -ge 1 ]] && {
+    [[ -n $vprev && $cword -ge 1 ]] && {
         upvars+=("$vprev")
         upargs+=(-v $vprev "${words[cword - 1]}")
     }
-    [[ -v vwords ]] && {
+    [[ -n $vwords ]] && {
         upvars+=("$vwords")
         upargs+=(-a${#words[@]} $vwords ${words+"${words[@]}"})
     }
@@ -1729,7 +1729,7 @@ _known_hosts_real()
     kh=()
 
     # ssh config files
-    if [[ -v configfile ]]; then
+    if [[ -n $configfile ]]; then
         [[ -r $configfile ]] && config+=("$configfile")
     else
         for i in /etc/ssh/ssh_config ~/.ssh/config ~/.ssh2/config; do
@@ -1775,7 +1775,7 @@ _known_hosts_real()
         done
     fi
 
-    if [[ ! -v configfile ]]; then
+    if [[ -z $configfile ]]; then
         # Global and user known_hosts files
         for i in /etc/ssh/ssh_known_hosts /etc/ssh/ssh_known_hosts2 \
             /etc/known_hosts /etc/known_hosts2 ~/.ssh/known_hosts \
@@ -1872,13 +1872,13 @@ _known_hosts_real()
 
     $reset
 
-    if [[ -v ipv4 ]]; then
+    if [[ -n $ipv4 ]]; then
         COMPREPLY=("${COMPREPLY[@]/*:*$suffix/}")
     fi
-    if [[ -v ipv6 ]]; then
+    if [[ -n $ipv6 ]]; then
         COMPREPLY=("${COMPREPLY[@]/+([0-9]).+([0-9]).+([0-9]).+([0-9])$suffix/}")
     fi
-    if [[ -v ipv4 || -v ipv6 ]]; then
+    if [[ -n $ipv4 || -v ipv6 ]]; then
         for i in "${!COMPREPLY[@]}"; do
             [[ ${COMPREPLY[i]} ]] || unset -v "COMPREPLY[i]"
         done
@@ -2295,7 +2295,7 @@ __load_completion()
     done
 
     # Look up simple "xspec" completions
-    [[ -v _xspecs[$cmd] ]] &&
+    [[ -n $_xspecs[$cmd] ]] &&
         complete -F _filedir_xspec "$cmd" "$backslash$cmd" && return 0
 
     return 1

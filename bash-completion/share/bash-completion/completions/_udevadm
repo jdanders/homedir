@@ -53,7 +53,7 @@ _udevadm()
 
     $split && return
 
-    if [[ ! -v udevcmd ]]; then
+    if [[ -z $udevcmd ]]; then
         case $cur in
             -*)
                 COMPREPLY=($(compgen -W '--help --version --debug' -- "$cur"))

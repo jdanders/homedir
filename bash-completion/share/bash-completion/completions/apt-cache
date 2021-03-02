@@ -34,7 +34,7 @@ _apt_cache()
         done
     fi
 
-    if [[ -v special && $ispecial -lt $cword ]]; then
+    if [[ -n $special && $ispecial -lt $cword ]]; then
         case $special in
             add)
                 _filedir
@@ -78,7 +78,7 @@ _apt_cache()
             --full --all-versions --no-all-versions --generate --no-generate
             --names-only --all-names --recurse --installed --with-source --help
             --version --config-file --option' -- "$cur"))
-    elif [[ ! -v special ]]; then
+    elif [[ -z $special ]]; then
         COMPREPLY=($(compgen -W 'gencaches showpkg stats showsrc dump
             dumpavail unmet show search depends rdepends pkgnames dotty xvcg
             policy madison' -- "$cur"))

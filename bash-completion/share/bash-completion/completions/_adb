@@ -33,7 +33,7 @@ _adb()
         fi
     done
 
-    if [[ ! -v cmd ]]; then
+    if [[ -z $cmd ]]; then
         local tmp=()
         if [[ ! $cur || $cur == -* ]]; then
             tmp+=($(compgen -W '$(_parse_help "$1" help)' -- "$cur"))

@@ -10,7 +10,7 @@ _useradd()
 
     local word chroot
     for word in "${words[@]}"; do
-        if [[ -v chroot ]]; then
+        if [[ -n $chroot ]]; then
             chroot=$word
             break
         fi
