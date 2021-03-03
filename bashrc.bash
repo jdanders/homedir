@@ -267,7 +267,7 @@ _TXTRST="\[\e[0m\]"
 _CURSOR=":"
 if [[ $(whoami) == root ]]; then
     _CYAN="\[\e[1;91;40m\]"  # Red
-    _CURSOR="$"
+    _CURSOR="#"
 fi
 case $TERM in
     xterm*)
