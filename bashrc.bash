@@ -260,53 +260,33 @@ export HISTSIZE=false
 #export GREP_OPTIONS=--color=auto
 
 # Set prompt format
-function proml {
-local       BLUE="\[\033[0;34m\]"
-local      GREEN="\[\033[0;32m\]"
-local        RED="\[\033[0;31m\]"
-local       CYAN="\[\033[1;36m\]"
-local     YELLOW="\[\033[0;33m\]"
-local  LIGHT_RED="\[\033[1;31m\]"
-local      WHITE="\[\033[1;37m\]"
-local      BLACK="\[\033[37;0;30m\]"
-local LIGHT_GRAY_BLUE="\[\033[1;47;1;34m\]"
-local GREY_ON_BLACK="\[\033[1;40;0;37m\]"
-local WHITE_ON_BLACK="\[\033[1;40;1;37m\]"
-local       CYAN_ON_BLACK="\[\033[1;40;1;36m\]"
-local     YELLOW_ON_BLACK="\[\033[1;40;1;33m\]"
-local NO_COLOR="\[\033[0m\]"
+
+_CYAN="\[\e[1;96;40m\]"
+_INVGRAY="\[\e[1;34;47m\]"
+_YELLOW="\[\e[1;33;40m\]"
+_TXTRST="\[\e[0m\]"
+_CURSOR=":"
+if [[ $(whoami) == root ]]; then
+    _CYAN="\[\e[1;91;40m\]"  # Red
+    _CURSOR="$"
+fi
 case $TERM in
     xterm*)
-        TITLEBAR='\[\033]0;\u@\h:\w\007\]'
+        _TITLEBAR='\[\033]0;\u@\h:\w\007\]'
         ;;
     *)
-        TITLEBAR=""
+        _TITLEBAR=""
         ;;
 esac
 
-PS1="${TITLEBAR}\
-$LIGHT_GRAY_BLUE\D{%b%d %H:%M}$NO_COLOR\
-$CYAN_ON_BLACK \h $YELLOW_ON_BLACK\w$NO_COLOR\
-\n$WHITE_ON_BLACK: "
-PS2='> '
-PS4='+ '
+export PS_PRE="${_TITLEBAR}$_INVGRAY\D{%b%d %H:%M%P}$_TXTRST $_CYAN\h$_TXTRST:$_YELLOW\w$_TXTRST"
+export PS_POST="\n$_CURSOR "
+export PS1=${PS_PRE}${PS_POST}
+if [ -n "${USE_GIT_PROMPT}" ]; then
+PROMPT_COMMAND='__git_ps1 "${PS_PRE}" "${PS_POST}"';${PROMPT_COMMAND}
+fi
 # Now append a reset color when pushing 'Enter'
 trap 'printf "\e[0m" "$_"' DEBUG
-
-if [ -n "${USE_GIT_PROMPT}" ]; then
-PROMPT_COMMAND='__git_ps1  "${TITLEBAR}\
-$LIGHT_GRAY_BLUE\D{%b%d %H:%M}$NO_COLOR\
-$CYAN_ON_BLACK \h $YELLOW_ON_BLACK\w$NO_COLOR" "\
-\n$WHITE_ON_BLACK: "'
-# The variables don't survive to the shell, so put in the non-readable ones
-PROMPT_COMMAND='__git_ps1  "${TITLEBAR}\
-\[\033[1;47;1;34m\]\D{%b%d %H:%M}\[\033[0m\]\
-\[\033[1;40;1;36m\] \h:\[\033[1;40;1;33m\]\w\[\033[0m\]" "\
-\n\[\033[1;40;1;37m\]: "'
-fi
-
-}
-proml
 
 export PATH=$PATH:/sbin:/usr/sbin
 export PATH=~/homedir/scripts:$PATH
