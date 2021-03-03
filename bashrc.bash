@@ -260,7 +260,6 @@ export HISTSIZE=false
 #export GREP_OPTIONS=--color=auto
 
 # Set prompt format
-
 _CYAN="\[\e[1;96;40m\]"
 _INVGRAY="\[\e[1;34;47m\]"
 _YELLOW="\[\e[1;33;40m\]"
@@ -279,11 +278,13 @@ case $TERM in
         ;;
 esac
 
-export PS_PRE="${_TITLEBAR}$_INVGRAY\D{%b%d %H:%M%P}$_TXTRST $_CYAN\h$_TXTRST:$_YELLOW\w$_TXTRST"
-export PS_POST="\n$_CURSOR "
-export PS1=${PS_PRE}${PS_POST}
+_PS_PRE="${_TITLEBAR}$_INVGRAY\D{%b%d %H:%M%P}$_TXTRST $_CYAN\h$_TXTRST:$_YELLOW\w$_TXTRST"
+_PS_POST="\n$_CURSOR "
+PS1=${_PS_PRE}${_PS_POST}
+PS2='> '
+PS4='+ '
 if [ -n "${USE_GIT_PROMPT}" ]; then
-PROMPT_COMMAND='__git_ps1 "${PS_PRE}" "${PS_POST}"';${PROMPT_COMMAND}
+    PROMPT_COMMAND='__git_ps1 "${_PS_PRE}" "${_PS_POST}"';${PROMPT_COMMAND}
 fi
 # Now append a reset color when pushing 'Enter'
 trap 'printf "\e[0m" "$_"' DEBUG
