@@ -5,23 +5,23 @@
 
 \`default_nettype none
 
-module ${1:module_name} #( 
+module ${1:module_name} #(
   parameter NAME = "default"
   )(
   $0input wire i_$1_data,
   output logic o_$1_data,
 
-  input wire i_$1_clk,
-  input wire i_$1_arst
+  input wire i_clk,
+  input wire i_areset
   );
 
-endmodule: $1
+endmodule
 
 \`default_nettype wire
 
 ///////////////////////////////////////////////////////////////////////////////
 // ** SECTURION CONFIDENTIAL **
-//    Copyright `(insert (format-time-string "%Y"))` Secturion Systems
+//    Copyright `((format-time-string "%Y")` Secturion Systems
 //    All Rights Reserved.
 // NOTICE:  All information contained herein is, and remains the property of
 // Secturion Systems and its suppliers, if any. The intellectual and technical
@@ -32,4 +32,3 @@ endmodule: $1
 // is strictly forbidden unless prior written permission is obtained
 // from Secturion Systems.
 ///////////////////////////////////////////////////////////////////////////////
-

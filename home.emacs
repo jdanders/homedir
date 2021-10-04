@@ -587,6 +587,9 @@ use std.textio.all;
 (setq auto-mode-alist (cons '("\\.v\\'" . verilog-mode) auto-mode-alist))
 ;; Any files in verilog mode should have their keywords colorized
 (add-hook 'verilog-mode-hook '(lambda () (font-lock-mode 1)))
+;; Fix _ as symbol instead of word
+;(add-hook 'verilog-mode-hook (lambda ()
+;              (modify-syntax-entry ?_ "_" verilog-mode-syntax-table)))
 
 ;; These were set by "custom" now changed to just setq
 (setq
