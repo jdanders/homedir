@@ -278,7 +278,7 @@ case $TERM in
         ;;
 esac
 
-_PS_PRE="${_TITLEBAR}$_INVGRAY\D{%b%d %H:%M%P}$_TXTRST $_CYAN\h$_TXTRST:$_YELLOW\w$_TXTRST"
+_PS_PRE="${_TITLEBAR}$_INVGRAY\D{%b%d %H:%M%P}$_TXTRST $_CYAN\h$_TXTRST $_YELLOW\w$_TXTRST"
 _PS_POST="\n$_CURSOR "
 PS1=${_PS_PRE}${_PS_POST}
 PS2='> '
