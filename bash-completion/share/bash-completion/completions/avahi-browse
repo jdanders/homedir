@@ -2,23 +2,25 @@
 
 _comp_cmd_avahi_browse()
 {
-    local cur prev words cword split
-    _init_completion -s || return
+    local cur prev words cword was_split comp_args
+    _comp_initialize -s -- "$@" || return
 
+    local noargopts='!(-*|*[D]*)'
+    # shellcheck disable=SC2254
     case $prev in
-        --domain | -!(-*)D)
+        --domain | -${noargopts}D)
             return
             ;;
-        --help | --version | -!(-*)[hV]*)
+        --help | --version | -${noargopts}[hV]*)
             return
             ;;
     esac
 
-    $split && return
+    [[ $was_split ]] && return
 
     if [[ $cur == -* ]]; then
-        COMPREPLY=($(compgen -W '$(_parse_help "$1")' -- "$cur"))
-        [[ $COMPREPLY != *= ]] || compopt -o nospace
+        _comp_compgen_help
+        [[ ${COMPREPLY-} != *= ]] || compopt -o nospace
         return
     fi
 
@@ -27,12 +29,12 @@ _comp_cmd_avahi_browse()
     local word
     for word in "${words[@]}"; do
         case $word in
-            --all | --browse-domains | --dump-db | -!(-*)[aDb]*)
+            --all | --browse-domains | --dump-db | -${noargopts}[aDb]*)
                 return
                 ;;
         esac
     done
-    COMPREPLY=($(compgen -W '$("$1" --dump-db --no-db-lookup)' -- "$cur"))
+    _comp_compgen_split -- "$("$1" --dump-db --no-db-lookup)"
 
 } &&
     complete -F _comp_cmd_avahi_browse avahi-browse avahi-browse-domains

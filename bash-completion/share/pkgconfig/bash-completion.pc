@@ -1,6 +1,6 @@
-prefix=/home/janderson/homedir/testbashcomplete
-datadir=/home/janderson/homedir/testbashcomplete/share
-sysconfdir=/home/janderson/homedir/testbashcomplete/etc
+prefix=/tmp/testbash
+datadir=/tmp/testbash/share
+sysconfdir=/tmp/testbash/etc
 
 compatdir=${sysconfdir}/bash_completion.d
 completionsdir=${datadir}/bash-completion/completions
@@ -9,4 +9,4 @@ helpersdir=${datadir}/bash-completion/helpers
 Name: bash-completion
 Description: programmable completion for the bash shell
 URL: https://github.com/scop/bash-completion
-Version: 2.11
+Version: 2.12.0

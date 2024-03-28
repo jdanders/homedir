@@ -1,16 +1,17 @@
 # bash shell function completion                           -*- shell-script -*-
 
-_function()
+_comp_cmd_function()
 {
-    local cur prev words cword
-    _init_completion || return
+    local cur prev words cword comp_args
+    _comp_initialize -- "$@" || return
 
     if ((cword == 1)); then
-        COMPREPLY=($(compgen -A function -- "$cur"))
+        _comp_compgen -- -A function
     else
-        COMPREPLY=("() $(type -- ${words[1]} | command sed -e 1,2d)")
+        local funcdef=$(type -- "${words[1]}" 2>/dev/null | command sed -e 1,2d)
+        COMPREPLY=("()${funcdef:+ $funcdef}")
     fi
 } &&
-    complete -F _function function
+    complete -F _comp_cmd_function function
 
 # ex: filetype=sh
