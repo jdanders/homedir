@@ -5,8 +5,8 @@
 ;; Created: 2010
 ;; Keywords: languages
 ;; Homepage: https://github.com/openscad/emacs-scad-mode
-;; Package-Requires: ((emacs "27.1") (compat "29.1.4.4"))
-;; Version: 93.3
+;; Package-Requires: ((emacs "27.1") (compat "30"))
+;; Version: 94.0
 
 ;; This file is not part of GNU Emacs.
 
@@ -51,6 +51,12 @@
   "openscad"
   "Path to openscad executable."
   :type 'string)
+
+(defcustom scad-extra-args
+  nil
+  "Additional command line arguments to pass to openscad.
+For example '--enable=manifold'."
+  :type '(repeat string))
 
 (defcustom scad-keywords
   '("return" "undef" "true" "false" "for" "each" "if" "else" "let" "intersection_for"
@@ -213,9 +219,11 @@ Options are .stl, .off, .amf, .3mf, .csg, .dxf, .svg, .pdf, .png,
           (concat (file-name-base (buffer-file-name))
                   scad-export-extension))))
   (save-buffer)
-  (compile (concat scad-command
-                   " -o " (shell-quote-argument (expand-file-name file))
-                   " " (shell-quote-argument (buffer-file-name)))))
+  (compile (string-join (append (list scad-command)
+                                (list "-o"
+                                      (shell-quote-argument (expand-file-name file))
+                                      (shell-quote-argument (buffer-file-name)))
+                                scad-extra-args) " ")))
 
 (defvar-local scad--preview-buffer      nil)
 (defvar-local scad--preview-proc        nil)
@@ -331,19 +339,21 @@ Options are .stl, .off, .amf, .3mf, .csg, .dxf, .svg, .pdf, .png,
                    (delete-file outfile)
                    (delete-file infile))))
              :command
-             (list scad-command
-                   "-o" outfile
-                   "--preview"
-                   (format "--projection=%s" scad-preview-projection)
-                   (format "--imgsize=%d,%d"
-                           (car scad-preview-size)
-                           (cdr scad-preview-size))
-                   (format "--view=%s"
-                           (mapconcat #'identity scad-preview-view ","))
-                   (format "--camera=%s"
-                           (mapconcat #'number-to-string scad-preview-camera ","))
-                   (format "--colorscheme=%s" scad-preview-colorscheme)
-                   infile))))))
+             (append
+              (list scad-command
+                    "-o" outfile
+                    "--preview"
+                    (format "--projection=%s" scad-preview-projection)
+                    (format "--imgsize=%d,%d"
+                            (car scad-preview-size)
+                            (cdr scad-preview-size))
+                    (format "--view=%s"
+                            (mapconcat #'identity scad-preview-view ","))
+                    (format "--camera=%s"
+                            (mapconcat #'number-to-string scad-preview-camera ","))
+                    (format "--colorscheme=%s" scad-preview-colorscheme)
+                    infile)
+              scad-extra-args))))))
 
 (defun scad--preview-kill ()
   "Kill current rendering."
@@ -447,7 +457,7 @@ Options are .stl, .off, .amf, .3mf, .csg, .dxf, .svg, .pdf, .png,
       :noquery t
       :connection-type 'pipe
       :buffer (generate-new-buffer " *scad-flymake*")
-      :command (list scad-command "-o" outfile infile)
+      :command (append (list scad-command "-o" outfile infile) scad-extra-args)
       :sentinel
       (lambda (proc _event)
         (when (memq (process-status proc) '(exit signal))

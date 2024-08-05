@@ -404,7 +404,7 @@ _comp_cmd_sftp()
 
     # Prefer `ssh` from same dir for resolving options, etc
     local pathcmd
-    pathcmd=$(type -P "$1") && local PATH=${pathcmd%/*}:$PATH
+    pathcmd=$(type -P -- "$1") && local PATH=${pathcmd%/*}:$PATH
 
     _comp_xfunc_ssh_compgen_suboption_check && return
 
@@ -469,7 +469,7 @@ _comp_cmd_scp__path_esc='[][(){}<>"'"'"',:;^&!$=?`\\|[:space:]]'
 _comp_xfunc_scp_compgen_remote_files()
 {
     # remove backslash escape from the first colon
-    cur=${cur/\\:/:}
+    local cur=${cur/\\:/:}
 
     local _userhost=${cur%%?(\\):*}
     local _path=${cur#*:}
@@ -499,7 +499,7 @@ _comp_xfunc_scp_compgen_remote_files()
             command sed -e 's/'"$_comp_cmd_scp__path_esc"'/\\\\\\&/g' -e 's/[*@|=]$//g' \
                 -e 's/[^\/]$/& /g')
     fi
-    _comp_compgen_split -l -- "$_files"
+    _comp_compgen -R split -l -- "$_files"
 }
 
 # @deprecated 2.12 use `_comp_compgen -ax ssh remote_files` instead
@@ -556,7 +556,7 @@ _comp_cmd_scp()
 
     # Prefer `ssh` from same dir for resolving options, remote files, etc
     local pathcmd
-    pathcmd=$(type -P "$1") && local PATH=${pathcmd%/*}:$PATH
+    pathcmd=$(type -P -- "$1") && local PATH=${pathcmd%/*}:$PATH
 
     _comp_xfunc_ssh_compgen_suboption_check && {
         ((${#COMPREPLY[@]})) && COMPREPLY=("${COMPREPLY[@]/%/ }")

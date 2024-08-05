@@ -169,6 +169,18 @@
   (defun make-backup-file-name (file)
     (concat auto-save-list-file-prefix "/" (file-name-nondirectory file) "~"))
 
+; Backups in autosave directory
+(setq backup-directory-alist '(("." . "~/.autosave/backup")))
+
+; create 4 versions of backup files as simple version control
+(setq version-control t)
+(setq kept-new-versions 4)
+(setq kept-old-versions 0)
+(setq delete-old-versions t)
+
+; No lock files in directory
+(setq create-lockfiles nil)
+
 ;; No copyright message on startup.
 (setq inhibit-startup-message t)
 ;; Down arrow won't extend buffer
@@ -586,7 +598,7 @@ use std.textio.all;
 ;; Any files that end in .v should be in verilog mode
 (setq auto-mode-alist (cons '("\\.v\\'" . verilog-mode) auto-mode-alist))
 ;; Any files in verilog mode should have their keywords colorized
-(add-hook 'verilog-mode-hook '(lambda () (font-lock-mode 1)))
+(add-hook 'verilog-mode-hook #'(lambda () (font-lock-mode 1)))
 ;; Fix _ as symbol instead of word
 ;(add-hook 'verilog-mode-hook (lambda ()
 ;              (modify-syntax-entry ?_ "_" verilog-mode-syntax-table)))
@@ -908,13 +920,9 @@ use std.textio.all;
      '("^\\*shell\\*$" . (display-buffer-same-window)))
 
 ; Enable projectile
-(setq projectile-keymap-prefix (kbd "C-x p"))
-(require 'projectile)
-(projectile-global-mode)
-
-; Enable grizzl
-(require 'grizzl)
-(setq projectile-completion-system (quote grizzl))
+;(setq projectile-keymap-prefix (kbd "C-x p"))
+;(require 'projectile)
+;(projectile-global-mode)
 
 ; scad-mode for openscad
 (autoload 'scad-mode "scad-mode" "A major mode for editing OpenSCAD code." t)
@@ -925,3 +933,23 @@ use std.textio.all;
 (add-to-list 'auto-mode-alist '("\\.ly$" . LilyPond-mode))
 (add-to-list 'auto-mode-alist '("\\.ily$" . LilyPond-mode))
 (add-hook 'LilyPond-mode-hook (lambda () (turn-on-font-lock)))
+
+; org-mode options (https://explog.in/notes/writingsetup.html)
+;(require 'org-bullets)
+;(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+(setq org-hide-leading-stars 't)
+(setq org-hide-emphasis-markers t)
+
+(customize-set-variable 'org-blank-before-new-entry
+                        '((heading . nil)
+                          (plain-list-item . nil)))
+(setq org-cycle-separator-lines 1)
+
+(when (> emacs-major-version 23)
+  (add-to-list 'load-path "~/homedir/emacs.d/async/")
+  )
+(require 'org-download)
+;; Drag-and-drop to `dired`
+(add-hook 'dired-mode-hook 'org-download-enable)
+(setq-default org-download-image-dir "~/.autosave/pictures")
