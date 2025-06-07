@@ -18,3 +18,7 @@ else:
 hexoff
 print ("Imported os,sys,re,sleep,pprint. Defined clog2,hexon/hexoff")
 # to interact in python 2: !import code; code.interact(local=vars())
+
+# Disable history if asked
+if os.environ.get("DISABLEPYHISTORY") == "TRUE":
+  import readline; readline.write_history_file = lambda *args: None

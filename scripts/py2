@@ -1,2 +1,3 @@
 #!/bin/bash
-python2 "$@"
+export DISABLEPYHISTORY=TRUE
+python3 "$@"
